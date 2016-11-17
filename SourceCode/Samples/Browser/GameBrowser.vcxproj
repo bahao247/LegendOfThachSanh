@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{3F2C048E-96A0-4B17-A80B-0B26645C35D9}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>Game_Browser</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GameBrowser.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LegendOfThachSanh_d</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GameBrowser.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">LegendOfThachSanh</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Browser/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;BOOST_ALL_NO_LIB;INCLUDE_RTSHADER_SYSTEM;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;BOOST_ALL_NO_LIB;INCLUDE_RTSHADER_SYSTEM;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Browser/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Browser/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\lib\Debug\OgreMain_d.lib;..\..\boost\lib\libboost_thread-vc100-mt-gd-1_55.lib;..\..\boost\lib\libboost_date_time-vc100-mt-gd-1_55.lib;..\..\boost\lib\libboost_system-vc100-mt-gd-1_55.lib;..\..\boost\lib\libboost_chrono-vc100-mt-gd-1_55.lib;..\..\lib\Debug\OgreRTShaderSystem_d.lib;..\..\lib\Debug\OgreTerrain_d.lib;..\..\lib\Debug\OgrePaging_d.lib;..\..\lib\Debug\OgreVolume_d.lib;..\..\lib\Debug\OgreOverlay_d.lib;..\..\lib\Debug\OIS_d.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>../../lib/Debug/Game_Browser_d.lib</ImportLibrary>
+      <ProgramDataBaseFile>../../bin/Debug/Game_Browser_d.pdb</ProgramDataBaseFile>
+      <SubSystem>Windows</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Browser/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BOOST_ALL_NO_LIB;INCLUDE_RTSHADER_SYSTEM;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BOOST_ALL_NO_LIB;INCLUDE_RTSHADER_SYSTEM;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Browser/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Browser/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\lib\Release\OgreMain.lib;..\..\boost\lib\libboost_thread-vc100-mt-1_55.lib;..\..\boost\lib\libboost_date_time-vc100-mt-1_55.lib;..\..\boost\lib\libboost_system-vc100-mt-1_55.lib;..\..\boost\lib\libboost_chrono-vc100-mt-1_55.lib;..\..\lib\Release\OgreRTShaderSystem.lib;..\..\lib\Release\OgreTerrain.lib;..\..\lib\Release\OgrePaging.lib;..\..\lib\Release\OgreVolume.lib;..\..\lib\Release\OgreOverlay.lib;..\..\lib\Release\OIS.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>../../lib/Release/GameBrowser.lib</ImportLibrary>
+      <ProgramDataBaseFile>../../bin/Release/GameBrowser.pdb</ProgramDataBaseFile>
+      <SubSystem>Windows</SubSystem>
+      <Version>
+      </Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\GameBrowser.h" />
+    <ClInclude Include="..\Common\include\Game.h" />
+    <ClInclude Include="..\Common\include\GameContext.h" />
+    <ClInclude Include="..\Common\include\GamePlugin.h" />
+    <ClInclude Include="..\Common\include\SdkCameraMan.h" />
+    <ClInclude Include="..\Common\include\SdkGame.h" />
+    <ClInclude Include="..\Common\include\SdkTrays.h" />
+    <ClInclude Include="..\Common\include\OgreStaticPluginLoader.h" />
+    <ClInclude Include="include\GameBrowser_OSX.h" />
+    <ClCompile Include="src\GameBrowser.cpp" />
+    <ClInclude Include="res\Resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Character\Game_Character.vcxproj">
+      <Project>{28219afa-c1e9-4c06-ab45-8791e231e9e7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DeferredShading\Game_DeferredShading.vcxproj">
+      <Project>{6f6d0c7d-cd30-4c2e-bef9-a821ef20c486}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OceanDemo\Game_Ocean.vcxproj">
+      <Project>{0d6eb362-904e-45dc-9578-cba01c5b6fc5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ParticleFX\Game_ParticleFX.vcxproj">
+      <Project>{683c15aa-89fd-4b15-8c96-f9165aab0985}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Terrain\Game_Terrain.vcxproj">
+      <Project>{5a8ac9d4-d99b-4717-880d-60948f190bae}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\LegendOfThachSanh.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\LegendOfThachSanh.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
