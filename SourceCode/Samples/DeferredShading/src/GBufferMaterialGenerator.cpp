@@ -17,7 +17,7 @@
 ---------------------------------------------------------------------------------------
 | Engine     : Ogre3D; ....................................                                                                     
 ---------------------------------------------------------------------------------------
-| Written by : Ba Hao Nguyen – Sports editors, IT.                                
+| Written by : Ba Hao Nguyen â€“ Sports editors, IT.                                
 ---------------------------------------------------------------------------------------
 | Note       : ....................................                                
 ---------------------------------------------------------------------------------------
@@ -342,13 +342,13 @@ GpuProgramPtr GBufferMaterialGeneratorImpl::generateFragmentShader(MaterialGener
 
         if (permutation & GBufferMaterialGenerator::GBP_NORMAL_MAP)
         {
-            ss << "uniform Gamer2D sNormalMap;" << std::endl;
+            ss << "uniform sampler2D sNormalMap;" << std::endl;
         }
 
         uint32 numTextures = permutation & GBufferMaterialGenerator::GBP_TEXTURE_MASK;
         for (uint32 i = 0; i < numTextures; i++)
         {
-            ss << "uniform Gamer2D sTex" << i << ";" << std::endl;
+            ss << "uniform sampler2D sTex" << i << ";" << std::endl;
         }
         if (numTextures == 0 || permutation & GBufferMaterialGenerator::GBP_HAS_DIFFUSE_COLOUR)
         {
@@ -482,27 +482,27 @@ GpuProgramPtr GBufferMaterialGeneratorImpl::generateFragmentShader(MaterialGener
 
         ss << std::endl;
 
-        int GamerNum = 0;
+        int samplerNum = 0;
         if (permutation & GBufferMaterialGenerator::GBP_NORMAL_MAP)
         {
             if(mIsSm4)
             {
-                ss << "	uniform Gamer2D sNormalMap : register(s" << GamerNum++ << ")," << std::endl;
+                ss << "	uniform sampler2D sNormalMap : register(s" << samplerNum++ << ")," << std::endl;
             }
             else
             {
-                ss << "	uniform Gamer sNormalMap : register(s" << GamerNum++ << ")," << std::endl;
+                ss << "	uniform sampler sNormalMap : register(s" << samplerNum++ << ")," << std::endl;
             }
         }
         uint32 numTextures = permutation & GBufferMaterialGenerator::GBP_TEXTURE_MASK;
         for (uint32 i=0; i<numTextures; i++) {
             if(mIsSm4)
             {
-                ss << "	uniform Gamer2D sTex" << i << " : register(s" << GamerNum++ << ")," << std::endl;
+                ss << "	uniform sampler2D sTex" << i << " : register(s" << samplerNum++ << ")," << std::endl;
             }
             else
             {
-                ss << "	uniform Gamer sTex" << i << " : register(s" << GamerNum++ << ")," << std::endl;
+                ss << "	uniform sampler sTex" << i << " : register(s" << samplerNum++ << ")," << std::endl;
             }
         }
         if (numTextures == 0 || permutation & GBufferMaterialGenerator::GBP_HAS_DIFFUSE_COLOUR)
