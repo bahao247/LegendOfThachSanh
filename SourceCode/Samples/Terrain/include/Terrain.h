@@ -902,13 +902,22 @@ protected:
 		if (mTerrainPaging)
 		{
 			OGRE_DELETE mTerrainPaging;
+			mTerrainPaging = 0;
 			OGRE_DELETE mPageManager;
+			mPageManager = 0;
 		}
-		else
+		else if(mTerrainGroup)
+		{
 			OGRE_DELETE mTerrainGroup;
+			mTerrainGroup = 0;
+		}
 
 		OGRE_DELETE mTerrainGlobals;
-        mHouseList.clear();
+		mTerrainGlobals = 0;
+
+		ResourceGroupManager::getSingleton().destroyResourceGroup("Terrain");
+
+		mHouseList.clear();
 
 		SdkGame::_shutdown();
 	}
