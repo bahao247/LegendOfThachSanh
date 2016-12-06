@@ -17,7 +17,7 @@
 ---------------------------------------------------------------------------------------
 | Engine     : Ogre3D; ....................................                                                                     
 ---------------------------------------------------------------------------------------
-| Written by : Ba Hao Nguyen – Sports editors, IT.                                
+| Written by : Ba Hao Nguyen ESports editors, IT.                                
 ---------------------------------------------------------------------------------------
 | Note       : ....................................                                
 ---------------------------------------------------------------------------------------
@@ -481,6 +481,7 @@ protected:
 		Real minHeight1 = 70;
 		Real fadeDist1 = 15;
 		float* pBlend1 = blendMap1->getBlendPointer();
+		float* pBlend0 = blendMap0->getBlendPointer();
 		for (Ogre::uint16 y = 0; y < terrain->getLayerBlendMapSize(); ++y)
 		{
 			for (Ogre::uint16 x = 0; x < terrain->getLayerBlendMapSize(); ++x)
@@ -490,7 +491,8 @@ protected:
 				blendMap0->convertImageToTerrainSpace(x, y, &tx, &ty);
 				Real height = terrain->getHeightAtTerrainPosition(tx, ty);
 				Real val = (height - minHeight0) / fadeDist0;
-				Math::Clamp(val, (Real)0, (Real)1);
+				val = Math::Clamp(val, (Real)0, (Real)1);
+				*pBlend0++ = val;
 
 				val = (height - minHeight1) / fadeDist1;
 				val = Math::Clamp(val, (Real)0, (Real)1);
