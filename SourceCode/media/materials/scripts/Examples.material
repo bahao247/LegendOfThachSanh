@@ -1734,6 +1734,545 @@ material Examples/GrassBlades
     }
 }
 
+material Examples/GrassBlades1
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass1.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass1.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades2
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass2.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass2.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades3
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass3.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass3.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades4
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass4.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass4.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades5
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass5.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass5.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades6
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass6.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass6.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades7
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass7.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass7.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades8
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass8.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass8.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades9
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass9.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass9.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades10
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass10.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass10.png
+            }
+        }
+    }
+}
+
+material Examples/GrassBlades11
+{
+    transparency_casts_shadows on
+    receive_shadows on
+	// Vertex program waving grass
+    technique
+    {
+        pass
+        {
+			vertex_program_ref Examples/GrassWaverVp
+			{
+			}
+			fragment_program_ref Examples/GrassWaverFp
+			{
+			}
+
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass11.png
+            }
+        }
+    }
+    // fallback
+    technique
+    {
+        pass
+        {
+			alpha_rejection greater 150
+			scene_blend alpha_blend
+
+		    cull_hardware none
+            cull_software none
+
+            texture_unit
+            {
+				tex_address_mode clamp
+                texture grass11.png
+            }
+        }
+    }
+}
+
 material Examples/Rockwall
 {
 	technique
