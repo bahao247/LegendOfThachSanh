@@ -36,6 +36,8 @@
 #define TERRAIN_PAGE_MAX_X 0
 #define TERRAIN_PAGE_MAX_Y 0
 
+#include "GamePlugin.h"
+#include "MaterialControls.h"
 #include "SdkGame.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -382,7 +384,7 @@ public:
 	}
 
 protected:
-
+	MaterialControlsContainer mMaterialControlsContainer;
 	TerrainGlobalOptions* mTerrainGlobals;
 	TerrainGroup* mTerrainGroup;
 	bool mPaging;
@@ -1049,7 +1051,23 @@ protected:
 
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 
-
+		loadAllMaterialControlFiles(mMaterialControlsContainer);
+		//Define a plane mesh that will be used for the ocean surface
+		Ogre::Plane oceanSurface;
+		oceanSurface.normal = Ogre::Vector3::UNIT_Y;
+		oceanSurface.d = 20;
+		 		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
+		 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		 			oceanSurface,
+		 			24000, 24000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+		 
+		Ogre::Entity*         mOceanSurfaceEnt;
+		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
+		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
+		entPos = Vector3(1000, 0, 5000);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 17;
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		sn->attachObject(mOceanSurfaceEnt);
 	}
 
 	void createGrassMesh(String grassName, String grassMaterialName)
