@@ -1,0 +1,335 @@
+material ThuVien_DHXD_Wood_Cherry_Original1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Wood_Cherry_Original.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_Wood_Bamboo_Medium1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Wood_Bamboo_Medium.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_Wood_Floor_Light1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Wood_Floor_Light.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_M_96_96_97
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.376471 0.376471 0.376471 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD__Beige_2
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.827451 0.741176 0.564706 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD__LightGray_1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.662745 0.662745 0.662745 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD_jean_blue1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.141176 0.184314 0.258824 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD_M_0135_DarkGray1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.317647 0.317647 0.317647 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD__Charcoal_1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.137255 0.137255 0.137255 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD_Color_B25
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.2 0.137255 0.117647 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD_Color_I03
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.196078 0.196078 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD_Translucent_Glass_Block_Dark1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Glass_Block_Dark.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_FrontColor1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material ThuVien_DHXD_Fencing_Metal_Straight1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Fencing_Metal_Straight.png
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_Fencing_Construction1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Fencing_Construction.png
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_Fencing_Picket_Concave1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Fencing_Picket_Concave.png
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_Roofing_Metal_Standing_Seam_Red1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Roofing_Metal_Standing_Seam_Red.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material ThuVien_DHXD_Color_001
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}

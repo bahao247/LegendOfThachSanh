@@ -44,6 +44,7 @@
 #include "OgreTerrainQuadTreeNode.h"
 #include "OgreTerrainMaterialGeneratorA.h"
 #include "OgreTerrainPaging.h"
+#include "SinbadCharacterController.h"
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS || OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include "macUtils.h"
@@ -69,7 +70,7 @@ public:
 		, mPageManager(0)
 		, mFly(false)
 		, mFallVelocity(0)
-		, mMode(MODE_NORMAL)
+		, mMode(MODE_EDIT_HEIGHT)
 		, mLayerEdit(1)
 		, mBrushSizeTerrainSpace(0.02)
 		, mHeightUpdateCountDown(0)
@@ -207,6 +208,9 @@ public:
 	}
     bool frameRenderingQueued(const FrameEvent& evt)
     {
+		// let character update animations and camera
+		mChara->addTime(evt.timeSinceLastFrame);
+
 		if (mMode != MODE_NORMAL)
 		{
 			waveGrass(evt.timeSinceLastFrame);
@@ -218,7 +222,7 @@ public:
 			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
 			if (rayResult.hit)
 			{
-				mEditMarker->setVisible(true);
+				//mEditMarker->setVisible(true);
 				mEditNode->setPosition(rayResult.position);
 
 				// figure out which terrains this affects
@@ -233,7 +237,7 @@ public:
 			}
 			else
 			{
-				mEditMarker->setVisible(false);
+				//mEditMarker->setVisible(false);
 			}
 		}
 
@@ -308,6 +312,11 @@ public:
 	{
 		mTerrainGroup->saveAllTerrains(onlyIfModified);
 	}
+
+//PTR TuanNA begin comment
+//[Add Character funct- 19/12/2016]
+
+//PTR TuanNA end comment
 
 	bool keyPressed (const OIS::KeyEvent &e)
 	{
@@ -438,7 +447,7 @@ protected:
 	Ogre::uint8 mLayerEdit;
 	Real mBrushSizeTerrainSpace;
 	SceneNode* mEditNode;
-	Entity* mEditMarker;
+	//Entity* mEditMarker;
 	Real mHeightUpdateCountDown;
 	Real mHeightUpdateRate;
 	Vector3 mTerrainPos;
@@ -832,16 +841,23 @@ protected:
         ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
         ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
 
-		mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
-		mEditNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		mEditNode->attachObject(mEditMarker);
-		mEditNode->setScale(0.05, 0.05, 0.05);
+// 		mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
+ 		mEditNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+// 		mEditNode->attachObject(mEditMarker);
+// 		mEditNode->setScale(0.05, 0.05, 0.05);
+
+		//PTR TuanNA begin comment
+		//[Add Character- 18/12/2016]
+		// disable default camera control so the character can do its own
+		mCameraMan->setStyle(CS_MANUAL);
+		mChara = new SinbadCharacterController(mCamera, mEditNode);
+		//PTR TuanNA end comment
 
 		setupControls();
 
 		mCameraMan->setTopSpeed(50);
 
-		setDragLook(true);
+		setDragLook(false);
 
 		MaterialManager::getSingleton().setDefaultTextureFiltering(TFO_ANISOTROPIC);
 		MaterialManager::getSingleton().setDefaultAnisotropy(7);
@@ -1031,12 +1047,12 @@ protected:
 		sn->attachObject(e);
 		mHouseList.push_back(e);
 
-		e = mSceneMgr->createEntity("tudorhouse.mesh");
-		entPos = Vector3(mTerrainPos.x + 1850, 0, mTerrainPos.z + 1478);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
-		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
+		e = mSceneMgr->createEntity("A1_DHXD.mesh");
+		entPos = Vector3(mTerrainPos.x + 1000, 0, mTerrainPos.z + 1000);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + mTerrainPos.y;
+		rot.FromAngleAxis(Degree(-180), Vector3::UNIT_Y);
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
-		sn->setScale(Vector3(0.12, 0.12, 0.12));
+		sn->setScale(Vector3(10, 10, 10));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
 
@@ -1068,6 +1084,9 @@ protected:
 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 17;
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->attachObject(mOceanSurfaceEnt);
+
+
+		
 	}
 
 	void createGrassMesh(String grassName, String grassMaterialName)
@@ -1220,6 +1239,13 @@ protected:
 	void cleanupContent()
 	{
 		MeshManager::getSingleton().remove("grass");
+
+		// clean up character controller and the floor mesh
+		if (mChara)
+		{
+			delete mChara;
+			mChara = 0;
+		}
 	}
 	//PTR TuanNA end comment
 
@@ -1227,6 +1253,8 @@ protected:
 	const Real GRASS_WIDTH;
 	const Real GRASS_HEIGHT;
 	StaticGeometry* mField;
+	//PTR TuanNA [Init SinbadCharacterController- 18/12/2016]
+	SinbadCharacterController* mChara;
 
 
 };

@@ -1,0 +1,214 @@
+material H1_DHXD_Metal_Corrogated_Shiny1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Metal_Corrogated_Shiny.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H1_DHXD_Oak3
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Oak2.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H1_DHXD_Color_0010
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD_FrontColor1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD_Color_0011
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.886275 0.886275 0.886275 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD_Color_0012
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.776471 0.776471 0.776471 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD_Translucent_Glass_Aqua1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.282353 0.819608 0.8 0.5
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+		}
+	}
+}
+material H1_DHXD_Color_0013
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.556863 0.556863 0.556863 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD__WarmGray3_1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.901961 0.85098 0.811765 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD__CorrogateShiny_1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture _CorrogateShiny_.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H1_DHXD_M_0098_DodgerBlue1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.117647 0.564706 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H1_DHXD_Roofing_Metal_Standing_Seam_Red1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Roofing_Metal_Standing_Seam_Red.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
