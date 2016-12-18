@@ -36,6 +36,8 @@
 #define TERRAIN_PAGE_MAX_X 0
 #define TERRAIN_PAGE_MAX_Y 0
 
+#include "GamePlugin.h"
+#include "MaterialControls.h"
 #include "SdkGame.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
@@ -51,6 +53,8 @@
 #define TERRAIN_FILE_SUFFIX String("dat")
 #define TERRAIN_WORLD_SIZE 12000.0f
 #define TERRAIN_SIZE 513
+#define MAX_GRASS 11
+#define MAX_GROUP_GRASS 3
 
 using namespace Ogre;
 using namespace OgreBites;
@@ -71,6 +75,8 @@ public:
 		, mHeightUpdateCountDown(0)
 		, mTerrainPos(1000,0,5000)
 		, mTerrainsImported(false)
+		,GRASS_WIDTH(40) 
+		,GRASS_HEIGHT(40)
 
 	{
 		mInfo["Title"] = "Level 3";
@@ -203,6 +209,7 @@ public:
     {
 		if (mMode != MODE_NORMAL)
 		{
+			waveGrass(evt.timeSinceLastFrame);
 			// fire ray
 			Ray ray; 
 			//ray = mCamera->getCameraToViewportRay(0.5, 0.5);
@@ -377,7 +384,7 @@ public:
 	}
 
 protected:
-
+	MaterialControlsContainer mMaterialControlsContainer;
 	TerrainGlobalOptions* mTerrainGlobals;
 	TerrainGroup* mTerrainGroup;
 	bool mPaging;
@@ -410,6 +417,21 @@ protected:
 		SHADOWS_COLOUR = 1,
 		SHADOWS_DEPTH = 2,
 		SHADOWS_COUNT = 3
+	};
+	enum GrassType
+	{
+		GRASS_NONE = 0,
+		GRASS_RED_FLOWER = 1,
+		GRASS_YELLOW_FLOWER = 2,
+		GRASS_ALOE_VERA = 3,
+		GRASS_DIEP = 4,
+		GRASS_DAO_FLOWER = 5,
+		GRASS_ANH_TUC = 6,
+		GRASS_MAI = 7,
+		GRASS_GANG = 8,
+		GRASS_LAU = 9,
+		GRASS_LAU_2 = 10,
+		GRASS_SAN_HO = 11
 	};
 	Mode mMode;
 	ShadowMode mShadowMode;
@@ -784,6 +806,22 @@ protected:
 		mTrayMgr->createParamsPanel(TL_TOPLEFT, "Help", 100, names)->setParamValue(0, "H/F1");
 	}
 
+	//PTR TuanNA begin comment
+	//[- 11/12/2016]
+#if OGRE_COMPILER == OGRE_COMPILER_MSVC
+#	pragma pack(push, 1)
+#endif
+	struct GrassVertex
+	{
+		float x, y, z;
+		float nx, ny, nz;
+		float u, v;
+	};
+#if OGRE_COMPILER == OGRE_COMPILER_MSVC
+#	pragma pack(pop)
+#endif
+	//PTR TuanNA end comment
+
 	void setupContent()
 	{
 		bool blankTerrain = false;
@@ -863,11 +901,128 @@ protected:
 
 		mTerrainGroup->freeTemporaryResources();
 
+		//PTR TuanNA begin comment
+		//[Add grass into map- 11/12/2016]
+		//createGrassMesh(String grassName, String grassMaterialName)
+		
+		// type grass in enum GrassType
+		int id = 1;
+		for (id; id <= MAX_GRASS; id++)
+		{
+			String grassMaterialName = "Examples/GrassBlades" + StringConverter::toString(id);
+			String grassName = "grass" + StringConverter::toString(id);
+			createGrassMesh(grassName, grassMaterialName);
+			
+		}
 
+		//PTR TuanNA [Create Entity- 12/12/2016]
+		Entity* grass1 = mSceneMgr->createEntity("Grass1", "grass1");
+		Entity* grass2 = mSceneMgr->createEntity("Grass2", "grass2");
+		Entity* grass3 = mSceneMgr->createEntity("Grass3", "grass3");
+		Entity* grass4 = mSceneMgr->createEntity("Grass4", "grass4");
+		Entity* grass5 = mSceneMgr->createEntity("Grass5", "grass5");
+		Entity* grass6 = mSceneMgr->createEntity("Grass6", "grass6");
+		Entity* grass7 = mSceneMgr->createEntity("Grass7", "grass7");
+		Entity* grass8 = mSceneMgr->createEntity("Grass8", "grass8");
+		Entity* grass9 = mSceneMgr->createEntity("Grass9", "grass9");
+		Entity* grass10 = mSceneMgr->createEntity("Grass10", "grass10");
+		Entity* grass11 = mSceneMgr->createEntity("Grass11", "grass11");
+
+		// create a static geometry field, which we will populate with grass
+		mField = mSceneMgr->createStaticGeometry("Field");
+		mField->setRegionDimensions(Vector3(140, 140, 140));
+		mField->setOrigin(Vector3(70, 70, 70));
+
+		// add grass uniformly throughout the field, with some random variations
+		for (int x = -280; x < 280; x += 50)
+		{
+			for (int z = -280; z < 280; z += 50)
+			{ 
+				Vector3 pos(mTerrainPos.x + 2043 + x, 0, mTerrainPos.z + 1715 + z);
+				//Set heigh for grass always on surface
+				pos.y = mTerrainGroup->getHeightAtWorldPosition(pos) + mTerrainPos.y;
+				Quaternion ori(Degree(Math::RangeRandom(0, 359)), Vector3::UNIT_Y);
+				Vector3 scale(0.5, Math::RangeRandom(0.42, 0.6), 0.5);
+
+				mField->addEntity(grass1, pos, ori, scale);
+			}
+		}
+
+		//Max grass in group
+		int groupGrass = MAX_GROUP_GRASS;
+
+		// add grass uniformly throughout the field, with some random variations
+		for (int x = -TERRAIN_WORLD_SIZE/2; x < TERRAIN_WORLD_SIZE/2; x += Math::RangeRandom(200, 500))
+		{
+			for (int z = -TERRAIN_WORLD_SIZE/2; z < TERRAIN_WORLD_SIZE/2; z += Math::RangeRandom(200, 500))
+			{
+				Vector3 pos(mTerrainPos.x + Math::RangeRandom(-50, 50) + x + 50, 0, mTerrainPos.z + Math::RangeRandom(-50, 50) + z + 50);
+				//Set heigh for grass always on surface
+				pos.y = mTerrainGroup->getHeightAtWorldPosition(pos) + mTerrainPos.y;
+				Quaternion ori(Degree(Math::RangeRandom(0, 359)), Vector3::UNIT_Y);
+				int scaleGrass = Math::RangeRandom(0.5, 2);
+				Vector3 scale(1*scaleGrass, Math::RangeRandom(0.85, 1.15)*scaleGrass, 1*scaleGrass);
+
+				if (groupGrass > 0)
+				{
+					switch (id)
+					{
+					case GRASS_RED_FLOWER:
+						mField->addEntity(grass1, pos, ori, scale);
+						break;
+					case GRASS_YELLOW_FLOWER:
+						mField->addEntity(grass2, pos, ori, scale);
+						break;
+					case GRASS_ALOE_VERA:
+						mField->addEntity(grass3, pos, ori, scale);
+						break;
+					case GRASS_DIEP:
+						mField->addEntity(grass4, pos, ori, scale);
+						break;
+					case GRASS_DAO_FLOWER:
+						mField->addEntity(grass5, pos, ori, scale);
+						break;
+					case GRASS_ANH_TUC:
+						mField->addEntity(grass6, pos, ori, scale);
+						break;
+					case GRASS_MAI:
+						mField->addEntity(grass7, pos, ori, scale);
+						break;
+					case GRASS_GANG:
+						mField->addEntity(grass8, pos, ori, scale);
+						break;
+					case GRASS_LAU:
+						mField->addEntity(grass9, pos, ori, scale);
+						break;
+					case GRASS_LAU_2:
+						mField->addEntity(grass10, pos, ori, scale);
+						break;
+					case GRASS_SAN_HO:
+						mField->addEntity(grass11, pos, ori, scale);
+						break;
+					}
+				groupGrass--;
+				} 
+				else
+				{
+					id = Math::RangeRandom(0, 11);
+					groupGrass = MAX_GROUP_GRASS;
+				}
+			}
+		}
+
+		mField->build();  // build our static geometry (bake the grass into it)
+
+		// build tangent vectors for the ogre head mesh
+		MeshPtr headMesh = MeshManager::getSingleton().load("ogrehead.mesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		unsigned short src, dest;
+		if (!headMesh->suggestTangentVectorBuildParams(VES_TANGENT, src, dest))
+			headMesh->buildTangentVectors(VES_TANGENT, src, dest);
+		//PTR TuanNA end comment
 
 		// create a few entities on the terrain
 		Entity* e = mSceneMgr->createEntity("tudorhouse.mesh");
-		Vector3 entPos(mTerrainPos.x + 2043, 0, mTerrainPos.z + 1715);
+		Vector3 entPos(-2000, 0, 2000);
 		Quaternion rot;
 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
 		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
@@ -896,8 +1051,144 @@ protected:
 
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 
-
+		loadAllMaterialControlFiles(mMaterialControlsContainer);
+		//Define a plane mesh that will be used for the ocean surface
+		Ogre::Plane oceanSurface;
+		oceanSurface.normal = Ogre::Vector3::UNIT_Y;
+		oceanSurface.d = 20;
+		 		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
+		 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		 			oceanSurface,
+		 			24000, 24000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+		 
+		Ogre::Entity*         mOceanSurfaceEnt;
+		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
+		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
+		entPos = Vector3(1000, 0, 5000);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 17;
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		sn->attachObject(mOceanSurfaceEnt);
 	}
+
+	void createGrassMesh(String grassName, String grassMaterialName)
+	{
+		MeshPtr mesh = MeshManager::getSingleton().createManual(grassName, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+		// create a submesh with the grass material
+		SubMesh* sm = mesh->createSubMesh();
+		sm->setMaterialName(grassMaterialName);//PTR TuanNA [grassMaterialName = "Examples/GrassBlades"- 11/12/2016]
+		sm->useSharedVertices = false;
+		sm->vertexData = OGRE_NEW VertexData();
+		sm->vertexData->vertexStart = 0;
+		sm->vertexData->vertexCount = 12;
+		sm->indexData->indexCount = 18;
+
+#if defined(INCLUDE_RTSHADER_SYSTEM)
+		MaterialPtr grassMat = MaterialManager::getSingleton().getByName(grassMaterialName);
+		grassMat->getTechnique(0)->setSchemeName(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+#endif
+
+		// specify a vertex format declaration for our mesh: 3 floats for position, 3 floats for normal, 2 floats for UV
+		VertexDeclaration* decl = sm->vertexData->vertexDeclaration;
+		decl->addElement(0, 0, VET_FLOAT3, VES_POSITION);
+		decl->addElement(0, sizeof(float) * 3, VET_FLOAT3, VES_NORMAL);
+		decl->addElement(0, sizeof(float) * 6, VET_FLOAT2, VES_TEXTURE_COORDINATES, 0);
+
+		// create a vertex buffer
+		HardwareVertexBufferSharedPtr vb = HardwareBufferManager::getSingleton().createVertexBuffer
+			(decl->getVertexSize(0), sm->vertexData->vertexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+
+		GrassVertex* verts = (GrassVertex*)vb->lock(HardwareBuffer::HBL_DISCARD);  // start filling in vertex data
+
+		for (unsigned int i = 0; i < 3; i++)  // each grass mesh consists of 3 planes
+		{
+			// planes intersect along the Y axis with 60 degrees between them
+			Real x = Math::Cos(Degree(i * 60)) * GRASS_WIDTH / 2;
+			Real z = Math::Sin(Degree(i * 60)) * GRASS_WIDTH / 2;
+
+			for (unsigned int j = 0; j < 4; j++)  // each plane has 4 vertices
+			{
+				GrassVertex& vert = verts[i * 4 + j];
+
+				vert.x = j < 2 ? -x : x;
+				vert.y = j % 2 ? 0 : GRASS_HEIGHT;
+				vert.z = j < 2 ? -z : z;
+
+				// all normals point straight up
+				vert.nx = 0;
+				vert.ny = 1;
+				vert.nz = 0;
+
+				vert.u = j < 2 ? 0 : 1;
+				vert.v = j % 2;
+			}
+		}
+
+		vb->unlock();  // commit vertex changes
+
+		sm->vertexData->vertexBufferBinding->setBinding(0, vb);  // bind vertex buffer to our submesh
+
+		// create an index buffer
+		sm->indexData->indexBuffer = HardwareBufferManager::getSingleton().createIndexBuffer
+			(HardwareIndexBuffer::IT_16BIT, sm->indexData->indexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+
+		// start filling in index data
+		Ogre::uint16* indices = (Ogre::uint16*)sm->indexData->indexBuffer->lock(HardwareBuffer::HBL_DISCARD);
+
+		for (unsigned int i = 0; i < 3; i++)  // each grass mesh consists of 3 planes
+		{
+			unsigned int off = i * 4;  // each plane consists of 2 triangles
+
+			*indices++ = 0 + off;
+			*indices++ = 3 + off;
+			*indices++ = 1 + off;
+
+			*indices++ = 0 + off;
+			*indices++ = 2 + off;
+			*indices++ = 3 + off;
+		}
+
+		sm->indexData->indexBuffer->unlock();  // commit index changes
+	}
+
+	//PTR TuanNA begin comment
+	//[Add grass into map- 11/12/2016]
+	void waveGrass(Real timeElapsed)
+	{
+		static Real xinc = Math::PI * 0.3;
+		static Real zinc = Math::PI * 0.44;
+		static Real xpos = Math::RangeRandom(-Math::PI, Math::PI);
+		static Real zpos = Math::RangeRandom(-Math::PI, Math::PI);
+		static Vector4 offset(0, 0, 0, 0);
+
+		xpos += xinc * timeElapsed;
+		zpos += zinc * timeElapsed;
+
+		// update vertex program parameters by binding a value to each renderable
+		StaticGeometry::RegionIterator regs =  mField->getRegionIterator();
+		while (regs.hasMoreElements())
+		{
+			StaticGeometry::Region* reg = regs.getNext();
+
+			// a little randomness
+			xpos += reg->getCentre().x * 0.001;
+			zpos += reg->getCentre().z * 0.001;
+			offset.x = Math::Sin(xpos) * 4;
+			offset.z = Math::Sin(zpos) * 4;
+
+			StaticGeometry::Region::LODIterator lods = reg->getLODIterator();
+			while (lods.hasMoreElements())
+			{
+				StaticGeometry::LODBucket::MaterialIterator mats = lods.getNext()->getMaterialIterator();
+				while (mats.hasMoreElements())
+				{
+					StaticGeometry::MaterialBucket::GeometryIterator geoms = mats.getNext()->getGeometryIterator();
+					while (geoms.hasMoreElements()) geoms.getNext()->setCustomParameter(999, offset);
+				}
+			}
+		}
+	}
+	//PTR TuanNA end comment
 
 	void _shutdown()
 	{
@@ -923,6 +1214,19 @@ protected:
 
 		SdkGame::_shutdown();
 	}
+
+	//PTR TuanNA begin comment
+	//[Remove mesh grass- 11/12/2016]
+	void cleanupContent()
+	{
+		MeshManager::getSingleton().remove("grass");
+	}
+	//PTR TuanNA end comment
+
+	//PTR TuanNA [Add grass into map- 11/12/2016]
+	const Real GRASS_WIDTH;
+	const Real GRASS_HEIGHT;
+	StaticGeometry* mField;
 
 
 };
