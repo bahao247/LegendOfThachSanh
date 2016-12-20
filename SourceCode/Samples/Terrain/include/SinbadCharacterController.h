@@ -73,7 +73,7 @@ public:
 	{
 		//entPos.y += 100;
 		setupBody(cam->getSceneManager(), mEditNode);
-		//setupCamera(cam);
+		setupCamera(cam, mEditNode);
 		setupAnimations();
 	}
 
@@ -81,7 +81,7 @@ public:
 	{
 		updateBody(deltaTime);
 		updateAnimations(deltaTime);
-		//updateCamera(deltaTime);
+		updateCamera(deltaTime);
 	}
 
 	void injectKeyDown(const OIS::KeyEvent& evt)
@@ -190,9 +190,9 @@ private:
 	void setupBody(SceneManager* sceneMgr, SceneNode* mEditNode)
 	{
 		// create main model
-		//mBodyNode = mEditNode;
+		mBodyNode = mEditNode;
 		mBodyEnt = sceneMgr->createEntity("SinbadBody", "Sinbad.mesh");
-		mEditNode->attachObject(mBodyEnt);
+		mBodyNode->attachObject(mBodyEnt);
 
 		// create swords and attach to sheath
 		LogManager::getSingleton().logMessage("Creating swords");
@@ -253,14 +253,14 @@ private:
 		mSwordsDrawn = false;
 	}
 
-	void setupCamera(Camera* cam)
+	void setupCamera(Camera* cam, SceneNode* mEditNode)
 	{
 		// create a pivot at roughly the character's shoulder
-		mCameraPivot = cam->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+		mCameraPivot = mEditNode/*cam->getSceneManager()->getRootSceneNode()->createChildSceneNode()*/;
 		// this is where the camera should be soon, and it spins around the pivot
 		mCameraGoal = mCameraPivot->createChildSceneNode(Vector3(0, 0, 15));
 		// this is where the camera actually is
-		mCameraNode = cam->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+		mCameraNode = mEditNode/*cam->getSceneManager()->getRootSceneNode()->createChildSceneNode()*/;
 		mCameraNode->setPosition(mCameraPivot->getPosition() + mCameraGoal->getPosition());
 
 		mCameraPivot->setFixedYawAxis(true);

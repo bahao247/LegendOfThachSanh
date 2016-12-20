@@ -321,6 +321,8 @@ public:
 	bool keyPressed (const OIS::KeyEvent &e)
 	{
 #if OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyDown(e);
 		switch (e.key)
 		{
 		case OIS::KC_S:
@@ -370,6 +372,45 @@ public:
 
 		return true;
 	}
+
+	bool keyReleased(const OIS::KeyEvent &e)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyUp(e);
+		return SdkGame::keyReleased(e);
+	}
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
+	bool touchPressed(const OIS::MultiTouchEvent& e)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(e);
+		return SdkGame::touchPressed(e);
+	}
+
+	bool touchMoved(const OIS::MultiTouchEvent& e)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseMove(e);
+		return SdkGame::touchMoved(e);
+	}
+#else
+	bool mouseMoved(const OIS::MouseEvent& e)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseMove(e);
+		return SdkGame::mouseMoved(e);
+	}
+
+	bool mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(e, id);
+		return SdkGame::mousePressed(e, id);
+	}
+#endif
+
+protected:
 
 	void itemSelected(SelectMenu* menu)
 	{
