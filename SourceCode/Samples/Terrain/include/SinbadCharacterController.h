@@ -73,7 +73,7 @@ public:
 	{
 		//entPos.y += 100;
 		setupBody(cam->getSceneManager(), mEditNode);
-		setupCamera(cam, mEditNode);
+		//setupCamera(cam, mEditNode);
 		setupAnimations();
 	}
 
@@ -81,7 +81,7 @@ public:
 	{
 		updateBody(deltaTime);
 		updateAnimations(deltaTime);
-		updateCamera(deltaTime);
+		//updateCamera(deltaTime);
 	}
 
 	void injectKeyDown(const OIS::KeyEvent& evt)
@@ -113,10 +113,10 @@ public:
 		}
 
 		// keep track of the player's intended direction
-		else if (evt.key == OIS::KC_W) mKeyDirection.z = -1;
-		else if (evt.key == OIS::KC_A) mKeyDirection.x = -1;
-		else if (evt.key == OIS::KC_S) mKeyDirection.z = 1;
-		else if (evt.key == OIS::KC_D) mKeyDirection.x = 1;
+ 		else if (evt.key == OIS::KC_W) mKeyDirection.z = -1;
+ 		else if (evt.key == OIS::KC_A) mKeyDirection.x = -1;
+ 		else if (evt.key == OIS::KC_S) mKeyDirection.z = 1;
+ 		else if (evt.key == OIS::KC_D) mKeyDirection.x = 1;
 
 		else if (evt.key == OIS::KC_SPACE && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
 		{
@@ -170,7 +170,7 @@ public:
 	void injectMouseMove(const OIS::MouseEvent& evt)
 	{
 		// update camera goal based on mouse movement
-		updateCameraGoal(-0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -0.0005f * evt.state.Z.rel);
+		//updateCameraGoal(-0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -0.0005f * evt.state.Z.rel);
 	}
 
 	void injectMouseDown(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
@@ -282,9 +282,9 @@ private:
 		if (mKeyDirection != Vector3::ZERO && mBaseAnimID != ANIM_DANCE)
 		{
 			// calculate actually goal direction in world based on player's key directions
-			mGoalDirection += mKeyDirection.z * mCameraNode->getOrientation().zAxis();
-			mGoalDirection += mKeyDirection.x * mCameraNode->getOrientation().xAxis();
-			mGoalDirection.y = 0;
+			//mGoalDirection += mKeyDirection.z * mCameraNode->getOrientation().zAxis();
+			//mGoalDirection += mKeyDirection.x * mCameraNode->getOrientation().xAxis();
+			//mGoalDirection.y = 0;
 			mGoalDirection.normalise();
 
 			Quaternion toGoal = mBodyNode->getOrientation().zAxis().getRotationTo(mGoalDirection);

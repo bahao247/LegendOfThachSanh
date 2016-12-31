@@ -216,8 +216,8 @@ public:
 			waveGrass(evt.timeSinceLastFrame);
 			// fire ray
 			Ray ray; 
-			//ray = mCamera->getCameraToViewportRay(0.5, 0.5);
-			ray = mTrayMgr->getCursorRay(mCamera);
+			ray = mCamera->getCameraToViewportRay(0.5, 0.5);
+			//ray = mTrayMgr->getCursorRay(mCamera);
 
 			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
 			if (rayResult.hit)

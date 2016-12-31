@@ -230,13 +230,13 @@ namespace OgreBites
 		{
 			if (mStyle == CS_FREELOOK)
 			{
-				if (evt.key == OIS::KC_W || evt.key == OIS::KC_UP) mGoingForward = true;
-				else if (evt.key == OIS::KC_S || evt.key == OIS::KC_DOWN) mGoingBack = true;
-				else if (evt.key == OIS::KC_A || evt.key == OIS::KC_LEFT) mGoingLeft = true;
-				else if (evt.key == OIS::KC_D || evt.key == OIS::KC_RIGHT) mGoingRight = true;
-				else if (evt.key == OIS::KC_PGUP) mGoingUp = true;
-				else if (evt.key == OIS::KC_PGDOWN) mGoingDown = true;
-				else if (evt.key == OIS::KC_LSHIFT) mFastMove = true;
+// 				if (evt.key == OIS::KC_W || evt.key == OIS::KC_UP) mGoingForward = true;
+// 				else if (evt.key == OIS::KC_S || evt.key == OIS::KC_DOWN) mGoingBack = true;
+// 				else if (evt.key == OIS::KC_A || evt.key == OIS::KC_LEFT) mGoingLeft = true;
+// 				else if (evt.key == OIS::KC_D || evt.key == OIS::KC_RIGHT) mGoingRight = true;
+// 				else if (evt.key == OIS::KC_PGUP) mGoingUp = true;
+// 				else if (evt.key == OIS::KC_PGDOWN) mGoingDown = true;
+// 				else if (evt.key == OIS::KC_LSHIFT) mFastMove = true;
 			}
 		}
 
