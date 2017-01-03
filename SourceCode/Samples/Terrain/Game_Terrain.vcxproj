@@ -140,9 +140,10 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\MaterialControls.h" />
+    <ClInclude Include="..\Common\include\MaterialControlsCommon.h" />
+    <ClInclude Include="..\Common\include\SinbadCharacterControllerCommon.h" />
     <ClInclude Include="include\Terrain.h" />
-    <ClCompile Include="src\MaterialControls.cpp" />
+    <ClCompile Include="..\Common\include\MaterialControlsCommon.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>

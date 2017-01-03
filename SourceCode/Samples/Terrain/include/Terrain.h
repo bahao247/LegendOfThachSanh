@@ -28,34 +28,36 @@
 */
 #ifndef __Terrain_H__
 #define __Terrain_H__
-
-//#define PAGING
-
-#define TERRAIN_PAGE_MIN_X 0
-#define TERRAIN_PAGE_MIN_Y 0
-#define TERRAIN_PAGE_MAX_X 0
-#define TERRAIN_PAGE_MAX_Y 0
-
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Include lib]
 #include "GamePlugin.h"
-#include "MaterialControls.h"
+#include "MaterialControlsCommon.h"
 #include "SdkGame.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
 #include "OgreTerrainQuadTreeNode.h"
 #include "OgreTerrainMaterialGeneratorA.h"
 #include "OgreTerrainPaging.h"
-
+#include "SinbadCharacterControllerCommon.h"
+#pragma endregion [Include lib]
+//////////////////////////////////////////////////////////////////////////
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS || OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include "macUtils.h"
 #endif
-
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Define Terrain]
+#define TERRAIN_PAGE_MIN_X 0
+#define TERRAIN_PAGE_MIN_Y 0
+#define TERRAIN_PAGE_MAX_X 0
+#define TERRAIN_PAGE_MAX_Y 0
 #define TERRAIN_FILE_PREFIX String("testTerrain")
 #define TERRAIN_FILE_SUFFIX String("dat")
 #define TERRAIN_WORLD_SIZE 12000.0f
 #define TERRAIN_SIZE 513
 #define MAX_GRASS 11
 #define MAX_GROUP_GRASS 3
-
+#pragma endregion [Define Terrain]
+//////////////////////////////////////////////////////////////////////////
 using namespace Ogre;
 using namespace OgreBites;
 
@@ -92,7 +94,7 @@ public:
 		// Update terrain at max 20fps
 		mHeightUpdateRate = 1.0 / 20.0;
 	}
-
+//////////////////////////////////////////////////////////////////////////
     void testCapabilities(const RenderSystemCapabilities* caps)
 	{
         if (!caps->hasCapability(RSC_VERTEX_PROGRAM) || !caps->hasCapability(RSC_FRAGMENT_PROGRAM))
@@ -101,7 +103,7 @@ public:
                         "so you cannot run this Game. Sorry!", "Game_Terrain::testCapabilities");
         }
 	}
-    
+ //////////////////////////////////////////////////////////////////////////
 	StringVector getRequiredPlugins()
 	{
 		StringVector names;
@@ -109,7 +111,7 @@ public:
             names.push_back("Cg Program Manager");
 		return names;
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void doTerrainModify(Terrain* terrain, const Vector3& centrepos, Real timeElapsed)
 	{
 		Vector3 tsPos;
@@ -205,7 +207,8 @@ public:
 #endif
 
 	}
-    bool frameRenderingQueued(const FrameEvent& evt)
+//////////////////////////////////////////////////////////////////////////
+	bool frameRenderingQueued(const FrameEvent& evt)
     {
 		if (mMode != MODE_NORMAL)
 		{
@@ -303,12 +306,12 @@ public:
 
 		return SdkGame::frameRenderingQueued(evt);  // don't forget the parent updates!
     }
-
+//////////////////////////////////////////////////////////////////////////
 	void saveTerrains(bool onlyIfModified)
 	{
 		mTerrainGroup->saveAllTerrains(onlyIfModified);
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	bool keyPressed (const OIS::KeyEvent &e)
 	{
 #if OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS
@@ -361,7 +364,7 @@ public:
 
 		return true;
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void itemSelected(SelectMenu* menu)
 	{
 		if (menu == mEditMenu)
@@ -374,7 +377,7 @@ public:
 			changeShadows();
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void checkBoxToggled(CheckBox* box)
 	{
 		if (box == mFlyBox)
@@ -382,7 +385,7 @@ public:
 			mFly = mFlyBox->isChecked();
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////
 protected:
 	MaterialControlsContainer mMaterialControlsContainer;
 	TerrainGlobalOptions* mTerrainGlobals;
@@ -452,8 +455,11 @@ protected:
 	typedef std::list<Entity*> EntityList;
 	EntityList mHouseList;
 
-
-
+	//PTR TuanNA [Add grass into map- 11/12/2016]
+	const Real GRASS_WIDTH;
+	const Real GRASS_HEIGHT;
+	StaticGeometry* mField;
+//////////////////////////////////////////////////////////////////////////
 	void defineTerrain(long x, long y, bool flat = false)
 	{
 		// if a file is available, use it
@@ -483,7 +489,7 @@ protected:
 
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void getTerrainImage(bool flipX, bool flipY, Image& img)
 	{
 		img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
@@ -493,7 +499,7 @@ protected:
 			img.flipAroundX();
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void initBlendMaps(Terrain* terrain)
 	{
 		TerrainLayerBlendMap* blendMap0 = terrain->getLayerBlendMap(1);
@@ -541,7 +547,7 @@ protected:
 		*/
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void configureTerrainDefaults(Light* l)
 	{
 		// Configure global
@@ -589,11 +595,12 @@ protected:
 
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void addTextureDebugOverlay(TrayLocation loc, TexturePtr tex, size_t i)
 	{
 		addTextureDebugOverlay(loc, tex->getName(), i);
 	}
+//////////////////////////////////////////////////////////////////////////
 	void addTextureDebugOverlay(TrayLocation loc, const String& texname, size_t i)
 	{
 		// Create material
@@ -629,7 +636,7 @@ protected:
 		w->getOverlayElement()->setMaterialName(matName);
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void addTextureShadowDebugOverlay(TrayLocation loc, size_t num)
 	{
 		for (size_t i = 0; i < num; ++i)
@@ -640,7 +647,7 @@ protected:
 		}
 
 	}
-		
+//////////////////////////////////////////////////////////////////////////
 	MaterialPtr buildDepthShadowMaterial(const String& textureName)
 	{
 		String matName = "DepthShadows/" + textureName;
@@ -667,12 +674,12 @@ protected:
 
 		return ret;
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void changeShadows()
 	{
 		configureShadows(mShadowMode != SHADOWS_NONE, mShadowMode == SHADOWS_DEPTH);
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void configureShadows(bool enabled, bool depthShadows)
 	{
 		TerrainMaterialGeneratorA::SM2Profile* matProfile = 
@@ -755,7 +762,7 @@ protected:
 
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	/*-----------------------------------------------------------------------------
 	| Extends setupView to change some initial camera settings for this Game.
 	-----------------------------------------------------------------------------*/
@@ -773,7 +780,7 @@ protected:
             mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
         }
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void setupControls()
 	{
 		mTrayMgr->showCursor();
@@ -805,7 +812,7 @@ protected:
 		names.push_back("Help");
 		mTrayMgr->createParamsPanel(TL_TOPLEFT, "Help", 100, names)->setParamValue(0, "H/F1");
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	//PTR TuanNA begin comment
 	//[- 11/12/2016]
 #if OGRE_COMPILER == OGRE_COMPILER_MSVC
@@ -821,16 +828,40 @@ protected:
 #	pragma pack(pop)
 #endif
 	//PTR TuanNA end comment
-
+//////////////////////////////////////////////////////////////////////////
+/////////////-------------------------------------////////////////////////
+////////////////////////////////////////////////////////////////////////// 
+//PTR TuanNA begin comment
+//[SETTUP CONTENT APP- 3/1/2017]
 	void setupContent()
 	{
+		//PTR TuanNA [Create Map game- 3/1/2017]
+		createscene();
+		createCharacter();
+	}
+//PTR TuanNA end comment
+//////////////////////////////////////////////////////////////////////////
+//////////////-------------------------------------//////////////////////// 
+//////////////////////////////////////////////////////////////////////////
+	void createCharacter()
+	{
+		// disable default camera control so the character can do its own
+		//mCameraMan->setStyle(CS_MANUAL);
+
+		//mChara = new SinbadCharacterController(mEditMarker);
+		
+	}
+////////////////////////////////////////////////////////////////////////// 
+	void createscene()
+	{
+#pragma region [Create Terrain]
 		bool blankTerrain = false;
 		//blankTerrain = true;
 
 		mTerrainGlobals = OGRE_NEW TerrainGlobalOptions();
 
-        ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
-        ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
+		ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
+		ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
 
 		mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
 		mEditNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -900,11 +931,11 @@ protected:
 		}
 
 		mTerrainGroup->freeTemporaryResources();
-
+#pragma endregion [Create Terrain]
 		//PTR TuanNA begin comment
 		//[Add grass into map- 11/12/2016]
 		//createGrassMesh(String grassName, String grassMaterialName)
-		
+#pragma region Create Grass
 		// type grass in enum GrassType
 		int id = 1;
 		for (id; id <= MAX_GRASS; id++)
@@ -912,7 +943,7 @@ protected:
 			String grassMaterialName = "Examples/GrassBlades" + StringConverter::toString(id);
 			String grassName = "grass" + StringConverter::toString(id);
 			createGrassMesh(grassName, grassMaterialName);
-			
+
 		}
 
 		//PTR TuanNA [Create Entity- 12/12/2016]
@@ -1001,7 +1032,7 @@ protected:
 						mField->addEntity(grass11, pos, ori, scale);
 						break;
 					}
-				groupGrass--;
+					groupGrass--;
 				} 
 				else
 				{
@@ -1012,14 +1043,10 @@ protected:
 		}
 
 		mField->build();  // build our static geometry (bake the grass into it)
-
-		// build tangent vectors for the ogre head mesh
-		MeshPtr headMesh = MeshManager::getSingleton().load("ogrehead.mesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		unsigned short src, dest;
-		if (!headMesh->suggestTangentVectorBuildParams(VES_TANGENT, src, dest))
-			headMesh->buildTangentVectors(VES_TANGENT, src, dest);
+#pragma endregion [Create Grass]
 		//PTR TuanNA end comment
 
+#pragma region [Create House]
 		// create a few entities on the terrain
 		Entity* e = mSceneMgr->createEntity("tudorhouse.mesh");
 		Vector3 entPos(-2000, 0, 2000);
@@ -1048,19 +1075,19 @@ protected:
 		sn->setScale(Vector3(0.12, 0.12, 0.12));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
-
+#pragma endregion [Create House]
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
-
+#pragma region [Create Ocean]
 		loadAllMaterialControlFiles(mMaterialControlsContainer);
 		//Define a plane mesh that will be used for the ocean surface
 		Ogre::Plane oceanSurface;
 		oceanSurface.normal = Ogre::Vector3::UNIT_Y;
 		oceanSurface.d = 20;
-		 		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
-		 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		 			oceanSurface,
-		 			24000, 24000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
-		 
+		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
+			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			oceanSurface,
+			TERRAIN_WORLD_SIZE*2, TERRAIN_WORLD_SIZE*2, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+
 		Ogre::Entity*         mOceanSurfaceEnt;
 		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
 		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
@@ -1068,8 +1095,9 @@ protected:
 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 17;
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->attachObject(mOceanSurfaceEnt);
+#pragma endregion [Create Ocean]
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void createGrassMesh(String grassName, String grassMaterialName)
 	{
 		MeshPtr mesh = MeshManager::getSingleton().createManual(grassName, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
@@ -1189,7 +1217,7 @@ protected:
 		}
 	}
 	//PTR TuanNA end comment
-
+//////////////////////////////////////////////////////////////////////////
 	void _shutdown()
 	{
 		if (mTerrainPaging)
@@ -1214,21 +1242,32 @@ protected:
 
 		SdkGame::_shutdown();
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	//PTR TuanNA begin comment
-	//[Remove mesh grass- 11/12/2016]
+	//[Clean up Grass and Ocean Surface- 11/12/2016]
 	void cleanupContent()
 	{
-		MeshManager::getSingleton().remove("grass");
+		//PTR TuanNA [Remove OceanSurface- 3/1/2017]
+		MeshManager::getSingleton().remove("OceanSurface");
+
+		//PTR TuanNA [Remove Grass- 3/1/2017]
+		for (int id = 1; id <= MAX_GRASS; id++)
+		{
+			String grassName = "grass" + StringConverter::toString(id);
+			MeshManager::getSingleton().remove(grassName);
+		}
+
+		// clean up character controller and the floor mesh
+		if (mChara)
+		{
+			delete mChara;
+			mChara = 0;
+		}
 	}
 	//PTR TuanNA end comment
 
-	//PTR TuanNA [Add grass into map- 11/12/2016]
-	const Real GRASS_WIDTH;
-	const Real GRASS_HEIGHT;
-	StaticGeometry* mField;
-
-
+	//Init Main Character
+	SinbadCharacterController* mChara;
 };
 
 #endif
