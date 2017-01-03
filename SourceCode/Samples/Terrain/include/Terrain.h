@@ -902,7 +902,7 @@ protected:
 		// disable default camera control so the character can do its own
 		mCameraMan->setStyle(CS_MANUAL);
 
-		mChara = new SinbadCharacterController("ThachSanh", mEditNode, mCamera, TERRAIN_WORLD_SIZE, mTerrainGroup);
+		mChara = new SinbadCharacterController("ThachSanh", mTerrainPos, mCamera, TERRAIN_WORLD_SIZE, mTerrainGroup);
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()
@@ -925,7 +925,7 @@ protected:
 
 		mCameraMan->setTopSpeed(50);
 
-		setDragLook(true);
+		setDragLook(false);
 
 		MaterialManager::getSingleton().setDefaultTextureFiltering(TFO_ANISOTROPIC);
 		MaterialManager::getSingleton().setDefaultAnisotropy(7);
