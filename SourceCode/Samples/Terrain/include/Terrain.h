@@ -210,9 +210,9 @@ public:
 //////////////////////////////////////////////////////////////////////////
 	bool frameRenderingQueued(const FrameEvent& evt)
     {
+#pragma region [Funct mMode]
 		if (mMode != MODE_NORMAL)
 		{
-			waveGrass(evt.timeSinceLastFrame);
 			// fire ray
 			Ray ray; 
 			//ray = mCamera->getCameraToViewportRay(0.5, 0.5);
@@ -221,7 +221,7 @@ public:
 			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
 			if (rayResult.hit)
 			{
-				mEditMarker->setVisible(true);
+//				mEditMarker->setVisible(true);
 				mEditNode->setPosition(rayResult.position);
 
 				// figure out which terrains this affects
@@ -234,12 +234,14 @@ public:
 					ti != terrainList.end(); ++ti)
 					doTerrainModify(*ti, rayResult.position, evt.timeSinceLastFrame);
 			}
-			else
-			{
-				mEditMarker->setVisible(false);
-			}
+// 			else
+// 			{
+// 				mEditMarker->setVisible(false);
+// 			}
 		}
-
+#pragma endregion [Funct mMode]
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Funct mFly]
 		if (!mFly)
 		{
 			// clamp to terrain
@@ -267,7 +269,9 @@ public:
 			}
 
 		}
-
+#pragma endregion [Funct mFly]
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Funct mHeight]
 		if (mHeightUpdateCountDown > 0)
 		{
 			mHeightUpdateCountDown -= evt.timeSinceLastFrame;
@@ -279,7 +283,9 @@ public:
 			}
 
 		}
-
+#pragma endregion [Funct mHeight]
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Funct build terrain isDerivedDataUpdateInProgress]
 		if (mTerrainGroup->isDerivedDataUpdateInProgress())
 		{
 			mTrayMgr->moveWidgetToTray(mInfoLabel, TL_TOP, 0);
@@ -303,6 +309,13 @@ public:
 				mTerrainsImported = false;
 			}
 		}
+#pragma endregion [Funct build terrain isDerivedDataUpdateInProgress]
+//////////////////////////////////////////////////////////////////////////
+		//PTR TuanNA [Add Character- 3/1/2017]
+		mChara->addTime(evt.timeSinceLastFrame);
+
+		//PTR TuanNA [Wave Grass- 3/1/2017]
+		waveGrass(evt.timeSinceLastFrame);
 
 		return SdkGame::frameRenderingQueued(evt);  // don't forget the parent updates!
     }
@@ -315,6 +328,8 @@ public:
 	bool keyPressed (const OIS::KeyEvent &e)
 	{
 #if OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyDown(e);
 		switch (e.key)
 		{
 		case OIS::KC_S:
@@ -365,6 +380,13 @@ public:
 		return true;
 	}
 //////////////////////////////////////////////////////////////////////////
+	bool keyReleased(const OIS::KeyEvent& e)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyUp(e);
+		return SdkGame::keyReleased(e);
+	}
+//////////////////////////////////////////////////////////////////////////
 	void itemSelected(SelectMenu* menu)
 	{
 		if (menu == mEditMenu)
@@ -385,6 +407,38 @@ public:
 			mFly = mFlyBox->isChecked();
 		}
 	}
+//////////////////////////////////////////////////////////////////////////
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
+	bool touchPressed(const OIS::MultiTouchEvent& evt)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(evt);
+		return SdkGame::touchPressed(evt);
+	}
+//////////////////////////////////////////////////////////////////////////
+	bool touchMoved(const OIS::MultiTouchEvent& evt)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseMove(evt);
+		return SdkGame::touchMoved(evt);
+	}
+//////////////////////////////////////////////////////////////////////////
+#else
+	bool mouseMoved(const OIS::MouseEvent& evt)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseMove(evt);
+		return SdkGame::mouseMoved(evt);
+	}
+//////////////////////////////////////////////////////////////////////////
+	bool mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(evt, id);
+		return SdkGame::mousePressed(evt, id);
+	}
+#endif
+////////////////////////////////////////////////////////////////////////// 
 //////////////////////////////////////////////////////////////////////////
 protected:
 	MaterialControlsContainer mMaterialControlsContainer;
@@ -846,10 +900,9 @@ protected:
 	void createCharacter()
 	{
 		// disable default camera control so the character can do its own
-		//mCameraMan->setStyle(CS_MANUAL);
+		mCameraMan->setStyle(CS_MANUAL);
 
-		//mChara = new SinbadCharacterController(mEditMarker);
-		
+		mChara = new SinbadCharacterController("ThachSanh", mEditNode, mCamera, TERRAIN_WORLD_SIZE, mTerrainGroup);
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()
@@ -863,10 +916,10 @@ protected:
 		ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
 		ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
 
-		mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
+		//mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
 		mEditNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-		mEditNode->attachObject(mEditMarker);
-		mEditNode->setScale(0.05, 0.05, 0.05);
+// 		mEditNode->attachObject(mEditMarker);
+// 		mEditNode->setScale(0.05, 0.05, 0.05);
 
 		setupControls();
 

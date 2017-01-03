@@ -143,7 +143,7 @@
     <ClInclude Include="..\Common\include\MaterialControlsCommon.h" />
     <ClInclude Include="..\Common\include\SinbadCharacterControllerCommon.h" />
     <ClInclude Include="include\Terrain.h" />
-    <ClCompile Include="..\Common\include\MaterialControlsCommon.cpp" />
+    <ClCompile Include="..\Common\src\MaterialControlsCommon.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>

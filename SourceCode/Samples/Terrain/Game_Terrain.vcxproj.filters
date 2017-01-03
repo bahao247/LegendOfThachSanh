@@ -4,7 +4,7 @@
     <ClCompile Include="src\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\include\MaterialControlsCommon.cpp">
+    <ClCompile Include="..\Common\src\MaterialControlsCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
