@@ -70,8 +70,8 @@ private:
 
 public:
 	//Ogre::String name, Ogre::SceneManager* sceneMgr, Ogre::Real worldSize
-	SinbadCharacterController(Ogre::String name, Vector3 mTerrainPos/*SceneNode* mEditNode*/, Camera* cam, Ogre::Real worldSize, TerrainGroup* TerrainGroup):
-	mTerrainGroup(TerrainGroup),
+	SinbadCharacterController(Ogre::String name, Vector3 mTerrainPos/*SceneNode* mEditNode*/, Camera* cam, Ogre::Real worldSize, TerrainGroup* terrainGroup):
+	mTerrainGroup(terrainGroup),
 	mCamera(cam)
 	{
 		setupBody(mCamera->getSceneManager(), mTerrainPos);
@@ -173,7 +173,7 @@ public:
 	void injectMouseMove(const OIS::MouseEvent& evt)
 	{
 		// update camera goal based on mouse movement
-		//updateCameraGoal(-0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -0.0005f * evt.state.Z.rel);
+		updateCameraGoal(-0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -0.0005f * evt.state.Z.rel);
 	}
 //////////////////////////////////////////////////////////////////////////
 	void injectMouseDown(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
@@ -194,9 +194,10 @@ private:
 	{
 		//Set heigh for grass always on surface
 		mTerrainPos.y = mTerrainGroup->getHeightAtWorldPosition(mTerrainPos);
-		mBodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode(mTerrainPos);
+		mBodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Vector3::UNIT_Y * CHAR_HEIGHT + mTerrainPos);
 		mBodyEnt = sceneMgr->createEntity("SinbadBody", "Sinbad.mesh");
 		mBodyNode->attachObject(mBodyEnt);
+		mBodyNode->scale(5,5,5);
 
 		// create swords and attach to sheath
 		LogManager::getSingleton().logMessage("Creating swords");
@@ -262,7 +263,7 @@ private:
 		// create a pivot at roughly the character's shoulder
 		mCameraPivot = mCamera->getSceneManager()->getRootSceneNode()->createChildSceneNode(mTerrainPos);
 		// this is where the camera should be soon, and it spins around the pivot
-		mCameraGoal = mCameraPivot->createChildSceneNode(Vector3(0, 0, 15));
+		mCameraGoal = mCameraPivot->createChildSceneNode(mTerrainPos + Vector3(0, 0, 15));
 		// this is where the camera actually is
 		mCameraNode = mCamera->getSceneManager()->getRootSceneNode()->createChildSceneNode();
 		mCameraNode->setPosition(mCameraPivot->getPosition() + mCameraGoal->getPosition());
@@ -274,6 +275,9 @@ private:
 		// our model is quite small, so reduce the clipping planes
 //  		mCamera->setNearClipDistance(0.1);
 //  		mCamera->setFarClipDistance(100);
+		mCamera->setNearClipDistance(0.1);
+		mCamera->setFarClipDistance(50000);
+
 		mCameraNode->attachObject(mCamera);
 
 		mPivotPitch = 0;
@@ -311,10 +315,10 @@ private:
 				Node::TS_LOCAL);
 			//////////////////////////////////////////////////////////////////////////
 			// create main model
-// 			Vector3 pos = mBodyNode->getPosition();
+ 			Vector3 pos = mBodyNode->getPosition();
 // 			//Set heigh for grass always on surface
-// 			pos.y = mTerrainGroup->getHeightAtWorldPosition(pos);
-// 			mBodyNode->setPosition(pos);
+ 			pos.y = mTerrainGroup->getHeightAtWorldPosition(pos);
+ 			mBodyNode->setPosition(pos);
 			//////////////////////////////////////////////////////////////////////////
 		}
 
@@ -328,7 +332,7 @@ private:
 			if (pos.y <= CHAR_HEIGHT)
 			{
 				// if we've hit the ground, change to landing state
-				pos.y = CHAR_HEIGHT;
+				pos.y = mTerrainGroup->getHeightAtWorldPosition(pos) + CHAR_HEIGHT;
 				mBodyNode->setPosition(pos);
 				setBaseAnimation(ANIM_JUMP_END, true);
 				mTimer = 0;

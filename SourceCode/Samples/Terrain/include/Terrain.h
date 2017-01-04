@@ -820,20 +820,20 @@ protected:
 	/*-----------------------------------------------------------------------------
 	| Extends setupView to change some initial camera settings for this Game.
 	-----------------------------------------------------------------------------*/
-	void setupView()
-	{
-		SdkGame::setupView();
-
-		mCamera->setPosition(mTerrainPos + Vector3(1683, 50, 2116));
-		mCamera->lookAt(Vector3(1963, 50, 1660));
-		mCamera->setNearClipDistance(0.1);
-		mCamera->setFarClipDistance(50000);
-
-		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
-        {
-            mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
-        }
-	}
+// 	void setupView()
+// 	{
+// 		//SdkGame::setupView();
+// 
+// 		mCamera->setPosition(mTerrainPos + Vector3(1683, 50, 2116));
+// 		mCamera->lookAt(Vector3(1963, 50, 1660));
+// 		mCamera->setNearClipDistance(0.1);
+// 		mCamera->setFarClipDistance(50000);
+// 
+// 		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
+//         {
+//             mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
+//         }
+// 	}
 //////////////////////////////////////////////////////////////////////////
 	void setupControls()
 	{
