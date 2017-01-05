@@ -39,6 +39,7 @@
 #include "OgreTerrainMaterialGeneratorA.h"
 #include "OgreTerrainPaging.h"
 #include "SinbadCharacterControllerCommon.h"
+#include "MyFileFactoryCommon.h"
 #pragma endregion [Include lib]
 //////////////////////////////////////////////////////////////////////////
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS || OGRE_PLATFORM == OGRE_PLATFORM_APPLE
@@ -90,9 +91,6 @@ public:
 			"Sinbad's swords. With the swords equipped, you can left click to slice vertically or "
 			"right click to slice horizontally. When the swords are not equipped, press E to "
 			"start/stop a silly dance routine.";
-
-		// Update terrain at max 20fps
-		mHeightUpdateRate = 1.0 / 20.0;
 	}
 //////////////////////////////////////////////////////////////////////////
     void testCapabilities(const RenderSystemCapabilities* caps)
@@ -441,6 +439,9 @@ public:
 	{
 		// relay input events to character controller
 		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(evt, id);
+		// play a single sound
+		engine->play3D("../../media/sound/explosion.wav",
+			vec3df(0,0,0), false, false, true);
 		return SdkGame::mousePressed(evt, id);
 	}
 #endif
@@ -519,6 +520,9 @@ protected:
 	const Real GRASS_WIDTH;
 	const Real GRASS_HEIGHT;
 	StaticGeometry* mField;
+	// start the sound engine with default parameters
+	ISoundEngine* engine;
+	ISound* music;
 //////////////////////////////////////////////////////////////////////////
 	void defineTerrain(long x, long y, bool flat = false)
 	{
@@ -898,9 +902,26 @@ protected:
 		//PTR TuanNA [Create Map game- 3/1/2017]
 		createscene();
 		createCharacter();
+		createSound();
 	}
 //PTR TuanNA end comment
 //////////////////////////////////////////////////////////////////////////
+	void createSound()
+	{
+		// Update terrain at max 20fps
+		mHeightUpdateRate = 1.0 / 20.0;
+
+		engine = createIrrKlangDevice();
+
+		CMyFileFactory* factory = new CMyFileFactory();
+		engine->addFileFactory(factory);
+		factory->drop(); // we don't need it anymore, delete it
+
+		// play a single sound
+		engine->play3D("../../media/sound/ophelia.mp3",
+			vec3df(0,0,0), true, false, true);
+	}
+////////////////////////////////////////////////////////////////////////// 
 //////////////-------------------------------------//////////////////////// 
 //////////////////////////////////////////////////////////////////////////
 	void createCharacter()
@@ -1324,6 +1345,8 @@ protected:
 			delete mChara;
 			mChara = 0;
 		}
+
+		engine->drop(); // delete engine
 	}
 	//PTR TuanNA end comment
 
