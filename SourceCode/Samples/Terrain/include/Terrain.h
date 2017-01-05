@@ -242,33 +242,39 @@ public:
 #pragma endregion [Funct mMode]
 //////////////////////////////////////////////////////////////////////////
 #pragma region [Funct mFly]
-		if (!mFly)
-		{
-			// clamp to terrain
-			Vector3 camPos = mCamera->getPosition();
-			Ray ray;
-			ray.setOrigin(Vector3(camPos.x, mTerrainPos.y + 10000, camPos.z));
-			ray.setDirection(Vector3::NEGATIVE_UNIT_Y);
-
-			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
-			Real distanceAboveTerrain = 50;
-			Real fallSpeed = 300;
-			Real newy = camPos.y;
-			if (rayResult.hit)
-			{
-				if (camPos.y > rayResult.position.y + distanceAboveTerrain)
+  		if (!mFly)
+  		{
+  			// clamp to terrain
+  			Vector3 characterPos = mChara->getCharacterPos();
+  			Ray ray;
+  			ray.setOrigin(Vector3(characterPos.x, mTerrainPos.y + 10000, characterPos.z));
+  			ray.setDirection(Vector3::NEGATIVE_UNIT_Y);
+  
+  			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
+  			Real distanceAboveTerrain = 5;
+  			Real fallSpeed = 300;
+  			Real newy = characterPos.y;
+  			if (rayResult.hit)
+  			{				
+				if (characterPos.y > rayResult.position.y + distanceAboveTerrain)
 				{
-					mFallVelocity += evt.timeSinceLastFrame * 20;
-					mFallVelocity = std::min(mFallVelocity, fallSpeed);
-					newy = camPos.y - mFallVelocity * evt.timeSinceLastFrame;
-
+					if (!(mChara->getAnime() == 11))
+					{
+						mFallVelocity += evt.timeSinceLastFrame * 20;
+						mFallVelocity = std::min(mFallVelocity, fallSpeed);
+						newy = characterPos.y - mFallVelocity * evt.timeSinceLastFrame;
+					}
 				}
-				newy = std::max(rayResult.position.y + distanceAboveTerrain, newy);
-				mCamera->setPosition(camPos.x, newy, camPos.z);
-				
-			}
+				else if(mChara->checkJump())
+				{
+					mChara->setMinPos(true);
+				}
 
-		}
+				newy = std::max(rayResult.position.y + distanceAboveTerrain, newy);
+				mChara->setCharacterPos(Vector3(characterPos.x, newy, characterPos.z));
+  			}
+  
+  		}
 #pragma endregion [Funct mFly]
 //////////////////////////////////////////////////////////////////////////
 #pragma region [Funct mHeight]
@@ -901,8 +907,10 @@ protected:
 	{
 		// disable default camera control so the character can do its own
 		mCameraMan->setStyle(CS_MANUAL);
+		
+		mChara = new SinbadCharacterController(mCamera);
 
-		mChara = new SinbadCharacterController("ThachSanh", mTerrainPos, mCamera, TERRAIN_WORLD_SIZE, mTerrainGroup);
+		mChara->setCharacterPos(mTerrainPos);
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()

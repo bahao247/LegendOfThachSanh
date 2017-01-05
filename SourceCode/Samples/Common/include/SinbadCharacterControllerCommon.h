@@ -31,7 +31,6 @@
 
 #include "Ogre.h"
 #include "OIS.h"
-#include "OgreTerrainGroup.h"
 
 using namespace Ogre;
 
@@ -41,9 +40,9 @@ using namespace Ogre;
 #define RUN_SPEED 17           // character running speed in units per second
 #define TURN_SPEED 500.0f      // character turning in degrees per second
 #define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
-#define JUMP_ACCEL 30.0f       // character jump acceleration in upward units per squared second
+#define JUMP_ACCEL 60.0f       // character jump acceleration in upward units per squared second
 #define GRAVITY 90.0f          // gravity in downward units per squared second
-//////////////////////////////////////////////////////////////////////////
+
 class SinbadCharacterController
 {
 private:
@@ -69,32 +68,56 @@ private:
 	};
 
 public:
-	//Ogre::String name, Ogre::SceneManager* sceneMgr, Ogre::Real worldSize
-	SinbadCharacterController(Ogre::String name, Vector3 mTerrainPos/*SceneNode* mEditNode*/, Camera* cam, Ogre::Real worldSize, TerrainGroup* terrainGroup):
-	mTerrainGroup(terrainGroup),
-	mCamera(cam)
+	
+	SinbadCharacterController(Camera* cam)
 	{
-		setupBody(mCamera->getSceneManager(), mTerrainPos);
-		setupCamera(mTerrainPos);
+		setupBody(cam->getSceneManager(), cam->getPosition());
+		setupCamera(cam);
 		setupAnimations();
 	}
-//////////////////////////////////////////////////////////////////////////
+
+	void setCharacterPos(Vector3 characterPos)
+	{
+		mBodyNode->setPosition(characterPos);
+	}
+
+	Vector3 getCharacterPos()
+	{
+		Vector3 characterPos = mBodyNode->getPosition();
+		return characterPos;
+	}
+
+	void setMinPos(bool MinPos)
+	{
+		mMinPos = MinPos;
+	}
+
+	int getAnime()
+	{
+		return mBaseAnimID;
+	}
+
+	bool checkJump()
+	{
+		return (mVerticalVelocity < 0);
+	}
+
 	void addTime(Real deltaTime)
 	{
 		updateBody(deltaTime);
 		updateAnimations(deltaTime);
 		updateCamera(deltaTime);
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void injectKeyDown(const OIS::KeyEvent& evt)
 	{
-		if (evt.key == OIS::KC_NUMPAD1 && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
+		if (evt.key == OIS::KC_Q && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
 		{
 			// take swords out (or put them back, since it's the same animation but reversed)
 			setTopAnimation(ANIM_DRAW_SWORDS, true);
 			mTimer = 0;
 		}
-		else if (evt.key == OIS::KC_NUMPAD2 && !mSwordsDrawn)
+		else if (evt.key == OIS::KC_E && !mSwordsDrawn)
 		{
 			if (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP)
 			{
@@ -115,12 +138,12 @@ public:
 		}
 
 		// keep track of the player's intended direction
-		else if (evt.key == OIS::KC_UP) mKeyDirection.z = -1;
-		else if (evt.key == OIS::KC_LEFT) mKeyDirection.x = -1;
-		else if (evt.key == OIS::KC_DOWN) mKeyDirection.z = 1;
-		else if (evt.key == OIS::KC_RIGHT) mKeyDirection.x = 1;
+		else if (evt.key == OIS::KC_W) mKeyDirection.z = -1;
+		else if (evt.key == OIS::KC_A) mKeyDirection.x = -1;
+		else if (evt.key == OIS::KC_S) mKeyDirection.z = 1;
+		else if (evt.key == OIS::KC_D) mKeyDirection.x = 1;
 
-		else if (evt.key == OIS::KC_RCONTROL && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
+		else if (evt.key == OIS::KC_SPACE && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
 		{
 			// jump if on ground
 			setBaseAnimation(ANIM_JUMP_START, true);
@@ -135,14 +158,14 @@ public:
 			if (mTopAnimID == ANIM_IDLE_TOP) setTopAnimation(ANIM_RUN_TOP, true);
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void injectKeyUp(const OIS::KeyEvent& evt)
 	{
 		// keep track of the player's intended direction
-		if (evt.key == OIS::KC_UP && mKeyDirection.z == -1) mKeyDirection.z = 0;
-		else if (evt.key == OIS::KC_LEFT && mKeyDirection.x == -1) mKeyDirection.x = 0;
-		else if (evt.key == OIS::KC_DOWN && mKeyDirection.z == 1) mKeyDirection.z = 0;
-		else if (evt.key == OIS::KC_RIGHT && mKeyDirection.x == 1) mKeyDirection.x = 0;
+		if (evt.key == OIS::KC_W && mKeyDirection.z == -1) mKeyDirection.z = 0;
+		else if (evt.key == OIS::KC_A && mKeyDirection.x == -1) mKeyDirection.x = 0;
+		else if (evt.key == OIS::KC_S && mKeyDirection.z == 1) mKeyDirection.z = 0;
+		else if (evt.key == OIS::KC_D && mKeyDirection.x == 1) mKeyDirection.x = 0;
 
 		if (mKeyDirection.isZeroLength() && mBaseAnimID == ANIM_RUN_BASE)
 		{
@@ -151,14 +174,14 @@ public:
 			if (mTopAnimID == ANIM_RUN_TOP) setTopAnimation(ANIM_IDLE_TOP);
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
 	void injectMouseMove(const OIS::MultiTouchEvent& evt)
 	{
 		// update camera goal based on mouse movement
 		updateCameraGoal(-0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -0.0005f * evt.state.Z.rel);
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void injectMouseDown(const OIS::MultiTouchEvent& evt)
 	{
 		if (mSwordsDrawn && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
@@ -168,14 +191,13 @@ public:
 			mTimer = 0;
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
 #else
 	void injectMouseMove(const OIS::MouseEvent& evt)
 	{
 		// update camera goal based on mouse movement
 		updateCameraGoal(-0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -0.0005f * evt.state.Z.rel);
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void injectMouseDown(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
 	{
 		if (mSwordsDrawn && (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP))
@@ -187,17 +209,15 @@ public:
 		}
 	}
 #endif
-//////////////////////////////////////////////////////////////////////////
+
 private:
-//////////////////////////////////////////////////////////////////////////
-	void setupBody(SceneManager* sceneMgr, Vector3 mTerrainPos/*SceneNode* mEditNode*/)
+
+	void setupBody(SceneManager* sceneMgr, Vector3 camPost)
 	{
-		//Set heigh for grass always on surface
-		mTerrainPos.y = mTerrainGroup->getHeightAtWorldPosition(mTerrainPos);
-		mBodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode(Vector3::UNIT_Y * CHAR_HEIGHT + mTerrainPos);
+		// create main model
+		mBodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
 		mBodyEnt = sceneMgr->createEntity("SinbadBody", "Sinbad.mesh");
 		mBodyNode->attachObject(mBodyEnt);
-		mBodyNode->scale(5,5,5);
 
 		// create swords and attach to sheath
 		LogManager::getSingleton().logMessage("Creating swords");
@@ -229,7 +249,7 @@ private:
 		mKeyDirection = Vector3::ZERO;
 		mVerticalVelocity = 0;
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void setupAnimations()
 	{
 		// this is very important due to the nature of the exported animations
@@ -257,15 +277,15 @@ private:
 
 		mSwordsDrawn = false;
 	}
-//////////////////////////////////////////////////////////////////////////
-	void setupCamera(Vector3 mTerrainPos/*SceneNode* mEditNode*/)
+
+	void setupCamera(Camera* cam)
 	{
 		// create a pivot at roughly the character's shoulder
-		mCameraPivot = mCamera->getSceneManager()->getRootSceneNode()->createChildSceneNode(mTerrainPos);
+		mCameraPivot = cam->getSceneManager()->getRootSceneNode()->createChildSceneNode();
 		// this is where the camera should be soon, and it spins around the pivot
-		mCameraGoal = mCameraPivot->createChildSceneNode(mTerrainPos + Vector3(0, 0, 15));
+		mCameraGoal = mCameraPivot->createChildSceneNode(Vector3(0, 0, 15));
 		// this is where the camera actually is
-		mCameraNode = mCamera->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+		mCameraNode = cam->getSceneManager()->getRootSceneNode()->createChildSceneNode();
 		mCameraNode->setPosition(mCameraPivot->getPosition() + mCameraGoal->getPosition());
 
 		mCameraPivot->setFixedYawAxis(true);
@@ -273,53 +293,44 @@ private:
 		mCameraNode->setFixedYawAxis(true);
 
 		// our model is quite small, so reduce the clipping planes
-//  		mCamera->setNearClipDistance(0.1);
-//  		mCamera->setFarClipDistance(100);
-		mCamera->setNearClipDistance(0.1);
-		mCamera->setFarClipDistance(50000);
-
-		mCameraNode->attachObject(mCamera);
+		//cam->setNearClipDistance(0.1);
+		cam->setFarClipDistance(100);
+		cam->setFarClipDistance(50000);
+		mCameraNode->attachObject(cam);
 
 		mPivotPitch = 0;
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void updateBody(Real deltaTime)
 	{
 		mGoalDirection = Vector3::ZERO;   // we will calculate this
 
 		if (mKeyDirection != Vector3::ZERO && mBaseAnimID != ANIM_DANCE)
 		{
-			//calculate actually goal direction in world based on player's key directions
+			// calculate actually goal direction in world based on player's key directions
 			mGoalDirection += mKeyDirection.z * mCameraNode->getOrientation().zAxis();
 			mGoalDirection += mKeyDirection.x * mCameraNode->getOrientation().xAxis();
 			mGoalDirection.y = 0;
 			mGoalDirection.normalise();
 
- 			Quaternion toGoal = mBodyNode->getOrientation().zAxis().getRotationTo(mGoalDirection);
-// 
-// 			// calculate how much the character has to turn to face goal direction
- 			Real yawToGoal = toGoal.getYaw().valueDegrees();
-// 			// this is how much the character CAN turn this frame
- 			Real yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * deltaTime * TURN_SPEED;
-// 			// reduce "turnability" if we're in midair
- 			if (mBaseAnimID == ANIM_JUMP_LOOP) yawAtSpeed *= 0.2f;
-// 
-// 			// turn as much as we can, but not more than we need to
- 			if (yawToGoal < 0) yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
- 			else if (yawToGoal > 0) yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
- 			
- 			mBodyNode->yaw(Degree(yawToGoal));
+			Quaternion toGoal = mBodyNode->getOrientation().zAxis().getRotationTo(mGoalDirection);
+
+			// calculate how much the character has to turn to face goal direction
+			Real yawToGoal = toGoal.getYaw().valueDegrees();
+			// this is how much the character CAN turn this frame
+			Real yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * deltaTime * TURN_SPEED;
+			// reduce "turnability" if we're in midair
+			if (mBaseAnimID == ANIM_JUMP_LOOP) yawAtSpeed *= 0.2f;
+
+			// turn as much as we can, but not more than we need to
+			if (yawToGoal < 0) yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
+			else if (yawToGoal > 0) yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
+			
+			mBodyNode->yaw(Degree(yawToGoal));
 
 			// move in current body direction (not the goal direction)
 			mBodyNode->translate(0, 0, deltaTime * RUN_SPEED * mAnims[mBaseAnimID]->getWeight(),
 				Node::TS_LOCAL);
-			//////////////////////////////////////////////////////////////////////////
-			// create main model
- 			Vector3 pos = mBodyNode->getPosition();
-// 			//Set heigh for grass always on surface
- 			pos.y = mTerrainGroup->getHeightAtWorldPosition(pos);
- 			mBodyNode->setPosition(pos);
-			//////////////////////////////////////////////////////////////////////////
 		}
 
 		if (mBaseAnimID == ANIM_JUMP_LOOP)
@@ -329,17 +340,19 @@ private:
 			mVerticalVelocity -= GRAVITY * deltaTime;
 			
 			Vector3 pos = mBodyNode->getPosition();
-			if (pos.y <= CHAR_HEIGHT)
+			if (mMinPos)
 			{
 				// if we've hit the ground, change to landing state
-				pos.y = mTerrainGroup->getHeightAtWorldPosition(pos) + CHAR_HEIGHT;
-				mBodyNode->setPosition(pos);
+				//pos.y = CHAR_HEIGHT;
+				//mBodyNode->setPosition(pos);
 				setBaseAnimation(ANIM_JUMP_END, true);
 				mTimer = 0;
+				mMinPos = false;
+				mVerticalVelocity = 0;
 			}
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void updateAnimations(Real deltaTime)
 	{
 		Real baseAnimSpeed = 1;
@@ -442,7 +455,7 @@ private:
 		// apply smooth transitioning between our animations
 		fadeAnimations(deltaTime);
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void fadeAnimations(Real deltaTime)
 	{
 		for (int i = 0; i < NUM_ANIMS; i++)
@@ -467,7 +480,7 @@ private:
 			}
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void updateCamera(Real deltaTime)
 	{
 		// place the camera pivot roughly at the character's shoulder
@@ -478,7 +491,7 @@ private:
 		// always look at the pivot
 		mCameraNode->lookAt(mCameraPivot->_getDerivedPosition(), Node::TS_WORLD);
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void updateCameraGoal(Real deltaYaw, Real deltaPitch, Real deltaZoom)
 	{
 		mCameraPivot->yaw(Degree(deltaYaw), Node::TS_WORLD);
@@ -501,7 +514,7 @@ private:
 			mCameraGoal->translate(0, 0, distChange, Node::TS_LOCAL);
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void setBaseAnimation(AnimID id, bool reset = false)
 	{
 		if (mBaseAnimID >= 0 && mBaseAnimID < NUM_ANIMS)
@@ -523,7 +536,7 @@ private:
 			if (reset) mAnims[id]->setTimePosition(0);
 		}
 	}
-//////////////////////////////////////////////////////////////////////////
+
 	void setTopAnimation(AnimID id, bool reset = false)
 	{
 		if (mTopAnimID >= 0 && mTopAnimID < NUM_ANIMS)
@@ -565,8 +578,7 @@ private:
 	Vector3 mGoalDirection;     // actual intended direction in world-space
 	Real mVerticalVelocity;     // for jumping
 	Real mTimer;                // general timer to see how long animations have been playing
-	TerrainGroup* mTerrainGroup; //PTR TuanNA [mTerrainGroup- 3/1/2017]
-	Camera* mCamera;
+	bool mMinPos; //Min height Terrain at pos
 };
 
 #endif
