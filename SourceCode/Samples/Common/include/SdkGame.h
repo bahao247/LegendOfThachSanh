@@ -530,7 +530,7 @@ namespace OgreBites
 			else
 			{
 				mCameraMan->setStyle(CS_FREELOOK);
-				mTrayMgr->hideCursor();
+				//mTrayMgr->hideCursor();
 				mDragLook = false;
 			}
 		}

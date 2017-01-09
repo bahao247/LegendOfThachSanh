@@ -28,34 +28,24 @@
 */
 #ifndef __Terrain_H__
 #define __Terrain_H__
-
-//#define PAGING
-
-#define TERRAIN_PAGE_MIN_X 0
-#define TERRAIN_PAGE_MIN_Y 0
-#define TERRAIN_PAGE_MAX_X 0
-#define TERRAIN_PAGE_MAX_Y 0
-
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Include lib]
 #include "GamePlugin.h"
-#include "MaterialControls.h"
+#include "MaterialControlsCommon.h"
 #include "SdkGame.h"
 #include "OgreTerrain.h"
 #include "OgreTerrainGroup.h"
 #include "OgreTerrainQuadTreeNode.h"
 #include "OgreTerrainMaterialGeneratorA.h"
 #include "OgreTerrainPaging.h"
-
+#include "SinbadCharacterControllerCommon.h"
+#include "MyFileFactoryCommon.h"
+#pragma endregion [Include lib]
+//////////////////////////////////////////////////////////////////////////
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS || OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include "macUtils.h"
 #endif
-
-#define TERRAIN_FILE_PREFIX String("testTerrain")
-#define TERRAIN_FILE_SUFFIX String("dat")
-#define TERRAIN_WORLD_SIZE 12000.0f
-#define TERRAIN_SIZE 513
-#define MAX_GRASS 11
-#define MAX_GROUP_GRASS 3
-
+//////////////////////////////////////////////////////////////////////////
 using namespace Ogre;
 using namespace OgreBites;
 
@@ -88,11 +78,8 @@ public:
 			"Sinbad's swords. With the swords equipped, you can left click to slice vertically or "
 			"right click to slice horizontally. When the swords are not equipped, press E to "
 			"start/stop a silly dance routine.";
-
-		// Update terrain at max 20fps
-		mHeightUpdateRate = 1.0 / 20.0;
 	}
-
+//////////////////////////////////////////////////////////////////////////
     void testCapabilities(const RenderSystemCapabilities* caps)
 	{
         if (!caps->hasCapability(RSC_VERTEX_PROGRAM) || !caps->hasCapability(RSC_FRAGMENT_PROGRAM))
@@ -101,7 +88,7 @@ public:
                         "so you cannot run this Game. Sorry!", "Game_Terrain::testCapabilities");
         }
 	}
-    
+ //////////////////////////////////////////////////////////////////////////
 	StringVector getRequiredPlugins()
 	{
 		StringVector names;
@@ -109,7 +96,7 @@ public:
             names.push_back("Cg Program Manager");
 		return names;
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void doTerrainModify(Terrain* terrain, const Vector3& centrepos, Real timeElapsed)
 	{
 		Vector3 tsPos;
@@ -205,11 +192,12 @@ public:
 #endif
 
 	}
-    bool frameRenderingQueued(const FrameEvent& evt)
+//////////////////////////////////////////////////////////////////////////
+	bool frameRenderingQueued(const FrameEvent& evt)
     {
+#pragma region [Funct mMode]
 		if (mMode != MODE_NORMAL)
 		{
-			waveGrass(evt.timeSinceLastFrame);
 			// fire ray
 			Ray ray; 
 			//ray = mCamera->getCameraToViewportRay(0.5, 0.5);
@@ -231,40 +219,58 @@ public:
 					ti != terrainList.end(); ++ti)
 					doTerrainModify(*ti, rayResult.position, evt.timeSinceLastFrame);
 			}
-			else
-			{
-				mEditMarker->setVisible(false);
-			}
+ 			else
+ 			{
+ 				mEditMarker->setVisible(false);
+ 			}
 		}
-
-		if (!mFly)
-		{
-			// clamp to terrain
-			Vector3 camPos = mCamera->getPosition();
-			Ray ray;
-			ray.setOrigin(Vector3(camPos.x, mTerrainPos.y + 10000, camPos.z));
-			ray.setDirection(Vector3::NEGATIVE_UNIT_Y);
-
-			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
-			Real distanceAboveTerrain = 50;
-			Real fallSpeed = 300;
-			Real newy = camPos.y;
-			if (rayResult.hit)
-			{
-				if (camPos.y > rayResult.position.y + distanceAboveTerrain)
+#pragma endregion [Funct mMode]
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Funct mFly]
+  		if (!mFly)
+  		{
+  			// clamp to terrain
+  			Vector3 characterPos = mChara->getCharacterPos();
+  			Ray ray;
+  			ray.setOrigin(Vector3(characterPos.x, mTerrainPos.y + 10000, characterPos.z));
+  			ray.setDirection(Vector3::NEGATIVE_UNIT_Y);
+  
+  			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
+  			Real distanceAboveTerrain = 5;
+  			Real fallSpeed = 300;
+  			Real newy = characterPos.y;
+  			if (rayResult.hit)
+  			{				
+				if (characterPos.y > rayResult.position.y + distanceAboveTerrain)
 				{
-					mFallVelocity += evt.timeSinceLastFrame * 20;
-					mFallVelocity = std::min(mFallVelocity, fallSpeed);
-					newy = camPos.y - mFallVelocity * evt.timeSinceLastFrame;
-
+					if (!(mChara->getAnime() == 11))
+					{
+						mFallVelocity += evt.timeSinceLastFrame * 20;
+						mFallVelocity = std::min(mFallVelocity, fallSpeed);
+						newy = characterPos.y - mFallVelocity * evt.timeSinceLastFrame;
+					}
 				}
+				else if(mChara->checkJump())
+				{
+					mChara->setMinPos(true);
+				}
+
 				newy = std::max(rayResult.position.y + distanceAboveTerrain, newy);
-				mCamera->setPosition(camPos.x, newy, camPos.z);
-				
-			}
+				mChara->setCharacterPos(Vector3(characterPos.x, newy, characterPos.z));
+  			}
 
-		}
-
+ 			if(isCollision())
+ 			{
+ 				LogManager::getSingleton().logMessage("True Collision!!!!!!");
+ 			}
+ 			else
+ 			{
+ 				LogManager::getSingleton().logMessage("Not Collision!!!!!!");
+ 			}
+  		}
+#pragma endregion [Funct mFly]
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Funct mHeight]
 		if (mHeightUpdateCountDown > 0)
 		{
 			mHeightUpdateCountDown -= evt.timeSinceLastFrame;
@@ -276,7 +282,9 @@ public:
 			}
 
 		}
-
+#pragma endregion [Funct mHeight]
+//////////////////////////////////////////////////////////////////////////
+#pragma region [Funct build terrain isDerivedDataUpdateInProgress]
 		if (mTerrainGroup->isDerivedDataUpdateInProgress())
 		{
 			mTrayMgr->moveWidgetToTray(mInfoLabel, TL_TOP, 0);
@@ -300,18 +308,27 @@ public:
 				mTerrainsImported = false;
 			}
 		}
+#pragma endregion [Funct build terrain isDerivedDataUpdateInProgress]
+//////////////////////////////////////////////////////////////////////////
+		//PTR TuanNA [Add Character- 3/1/2017]
+		mChara->addTime(evt.timeSinceLastFrame);
+
+		//PTR TuanNA [Wave Grass- 3/1/2017]
+		waveGrass(evt.timeSinceLastFrame);
 
 		return SdkGame::frameRenderingQueued(evt);  // don't forget the parent updates!
     }
-
+//////////////////////////////////////////////////////////////////////////
 	void saveTerrains(bool onlyIfModified)
 	{
 		mTerrainGroup->saveAllTerrains(onlyIfModified);
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	bool keyPressed (const OIS::KeyEvent &e)
 	{
 #if OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyDown(e);
 		switch (e.key)
 		{
 		case OIS::KC_S:
@@ -361,7 +378,14 @@ public:
 
 		return true;
 	}
-
+//////////////////////////////////////////////////////////////////////////
+	bool keyReleased(const OIS::KeyEvent& e)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyUp(e);
+		return SdkGame::keyReleased(e);
+	}
+//////////////////////////////////////////////////////////////////////////
 	void itemSelected(SelectMenu* menu)
 	{
 		if (menu == mEditMenu)
@@ -374,7 +398,7 @@ public:
 			changeShadows();
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void checkBoxToggled(CheckBox* box)
 	{
 		if (box == mFlyBox)
@@ -382,7 +406,42 @@ public:
 			mFly = mFlyBox->isChecked();
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS) || (OGRE_PLATFORM == OGRE_PLATFORM_ANDROID)
+	bool touchPressed(const OIS::MultiTouchEvent& evt)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(evt);
+		return SdkGame::touchPressed(evt);
+	}
+//////////////////////////////////////////////////////////////////////////
+	bool touchMoved(const OIS::MultiTouchEvent& evt)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseMove(evt);
+		return SdkGame::touchMoved(evt);
+	}
+//////////////////////////////////////////////////////////////////////////
+#else
+	bool mouseMoved(const OIS::MouseEvent& evt)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseMove(evt);
+		return SdkGame::mouseMoved(evt);
+	}
+//////////////////////////////////////////////////////////////////////////
+	bool mousePressed(const OIS::MouseEvent& evt, OIS::MouseButtonID id)
+	{
+		// relay input events to character controller
+		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(evt, id);
+		// play a single sound
+		engine->play3D("../../media/sound/explosion.wav",
+			vec3df(0,0,0), false, false, true);
+		return SdkGame::mousePressed(evt, id);
+	}
+#endif
+////////////////////////////////////////////////////////////////////////// 
+//////////////////////////////////////////////////////////////////////////
 protected:
 	MaterialControlsContainer mMaterialControlsContainer;
 	TerrainGlobalOptions* mTerrainGlobals;
@@ -404,35 +463,7 @@ protected:
 #endif
 	bool mFly;
 	Real mFallVelocity;
-	enum Mode
-	{
-		MODE_NORMAL = 0,
-		MODE_EDIT_HEIGHT = 1,
-		MODE_EDIT_BLEND = 2,
-		MODE_COUNT = 3
-	};
-	enum ShadowMode
-	{
-		SHADOWS_NONE = 0,
-		SHADOWS_COLOUR = 1,
-		SHADOWS_DEPTH = 2,
-		SHADOWS_COUNT = 3
-	};
-	enum GrassType
-	{
-		GRASS_NONE = 0,
-		GRASS_RED_FLOWER = 1,
-		GRASS_YELLOW_FLOWER = 2,
-		GRASS_ALOE_VERA = 3,
-		GRASS_DIEP = 4,
-		GRASS_DAO_FLOWER = 5,
-		GRASS_ANH_TUC = 6,
-		GRASS_MAI = 7,
-		GRASS_GANG = 8,
-		GRASS_LAU = 9,
-		GRASS_LAU_2 = 10,
-		GRASS_SAN_HO = 11
-	};
+
 	Mode mMode;
 	ShadowMode mShadowMode;
 	Ogre::uint8 mLayerEdit;
@@ -448,12 +479,21 @@ protected:
 	OgreBites::Label* mInfoLabel;
 	bool mTerrainsImported;
 	ShadowCameraSetupPtr mPSSMSetup;
+	SceneNode* mBodyNode1;
+	Entity* mBodyEnt1;
+	Ogre::Real mMechLength;
 
 	typedef std::list<Entity*> EntityList;
 	EntityList mHouseList;
 
-
-
+	//PTR TuanNA [Add grass into map- 11/12/2016]
+	const Real GRASS_WIDTH;
+	const Real GRASS_HEIGHT;
+	StaticGeometry* mField;
+	// start the sound engine with default parameters
+	ISoundEngine* engine;
+	ISound* music;
+//////////////////////////////////////////////////////////////////////////
 	void defineTerrain(long x, long y, bool flat = false)
 	{
 		// if a file is available, use it
@@ -483,7 +523,7 @@ protected:
 
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void getTerrainImage(bool flipX, bool flipY, Image& img)
 	{
 		img.load("terrain.png", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
@@ -493,7 +533,7 @@ protected:
 			img.flipAroundX();
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void initBlendMaps(Terrain* terrain)
 	{
 		TerrainLayerBlendMap* blendMap0 = terrain->getLayerBlendMap(1);
@@ -541,7 +581,7 @@ protected:
 		*/
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void configureTerrainDefaults(Light* l)
 	{
 		// Configure global
@@ -589,11 +629,12 @@ protected:
 
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void addTextureDebugOverlay(TrayLocation loc, TexturePtr tex, size_t i)
 	{
 		addTextureDebugOverlay(loc, tex->getName(), i);
 	}
+//////////////////////////////////////////////////////////////////////////
 	void addTextureDebugOverlay(TrayLocation loc, const String& texname, size_t i)
 	{
 		// Create material
@@ -629,7 +670,7 @@ protected:
 		w->getOverlayElement()->setMaterialName(matName);
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void addTextureShadowDebugOverlay(TrayLocation loc, size_t num)
 	{
 		for (size_t i = 0; i < num; ++i)
@@ -640,7 +681,7 @@ protected:
 		}
 
 	}
-		
+//////////////////////////////////////////////////////////////////////////
 	MaterialPtr buildDepthShadowMaterial(const String& textureName)
 	{
 		String matName = "DepthShadows/" + textureName;
@@ -667,12 +708,12 @@ protected:
 
 		return ret;
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void changeShadows()
 	{
 		configureShadows(mShadowMode != SHADOWS_NONE, mShadowMode == SHADOWS_DEPTH);
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void configureShadows(bool enabled, bool depthShadows)
 	{
 		TerrainMaterialGeneratorA::SM2Profile* matProfile = 
@@ -755,25 +796,25 @@ protected:
 
 
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	/*-----------------------------------------------------------------------------
 	| Extends setupView to change some initial camera settings for this Game.
 	-----------------------------------------------------------------------------*/
-	void setupView()
-	{
-		SdkGame::setupView();
-
-		mCamera->setPosition(mTerrainPos + Vector3(1683, 50, 2116));
-		mCamera->lookAt(Vector3(1963, 50, 1660));
-		mCamera->setNearClipDistance(0.1);
-		mCamera->setFarClipDistance(50000);
-
-		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
-        {
-            mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
-        }
-	}
-
+// 	void setupView()
+// 	{
+// 		//SdkGame::setupView();
+// 
+// 		mCamera->setPosition(mTerrainPos + Vector3(1683, 50, 2116));
+// 		mCamera->lookAt(Vector3(1963, 50, 1660));
+// 		mCamera->setNearClipDistance(0.1);
+// 		mCamera->setFarClipDistance(50000);
+// 
+// 		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
+//         {
+//             mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
+//         }
+// 	}
+//////////////////////////////////////////////////////////////////////////
 	void setupControls()
 	{
 		mTrayMgr->showCursor();
@@ -805,9 +846,9 @@ protected:
 		names.push_back("Help");
 		mTrayMgr->createParamsPanel(TL_TOPLEFT, "Help", 100, names)->setParamValue(0, "H/F1");
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	//PTR TuanNA begin comment
-	//[- 11/12/2016]
+	//[Init GrassVertex- 11/12/2016]
 #if OGRE_COMPILER == OGRE_COMPILER_MSVC
 #	pragma pack(push, 1)
 #endif
@@ -821,16 +862,107 @@ protected:
 #	pragma pack(pop)
 #endif
 	//PTR TuanNA end comment
-
+//////////////////////////////////////////////////////////////////////////
+/////////////-------------------------------------////////////////////////
+////////////////////////////////////////////////////////////////////////// 
+//PTR TuanNA begin comment
+//[SETTUP CONTENT APP- 3/1/2017]
 	void setupContent()
 	{
+		//PTR TuanNA [Create Map game- 3/1/2017]
+		createscene();
+		createCharacter();
+		createSound();
+	}
+//PTR TuanNA end comment
+//////////////////////////////////////////////////////////////////////////
+	void createSound()
+	{
+		// Update terrain at max 20fps
+		mHeightUpdateRate = 1.0 / 20.0;
+
+		engine = createIrrKlangDevice();
+
+		CMyFileFactory* factory = new CMyFileFactory();
+		engine->addFileFactory(factory);
+		factory->drop(); // we don't need it anymore, delete it
+
+		// play a single sound
+		engine->play3D("../../media/sound/XinChaoVietNam_Jmi.flac",
+			vec3df(0,0,0), true, false, true);
+	}
+////////////////////////////////////////////////////////////////////////// 
+	bool isCollision() 
+	{
+		// fire ray
+		// execute the query, returns a vector of hits
+		RaySceneQuery* mRaySceneQuery = mSceneMgr->createRayQuery(Ray());
+
+		Ray ray;
+
+		ray.setOrigin(mChara->getCharacterPos());
+		ray.setDirection(mChara->getGoalDirection());
+
+		// create a query object
+		mRaySceneQuery->setRay(ray);
+
+		RaySceneQueryResult &result = mRaySceneQuery->execute();
+		RaySceneQueryResult::iterator itr;
+		for (itr = result.begin(); itr != result.end(); itr++) {
+
+			if ((itr->movable->getName() != "") && itr->distance < 100) {
+				LogManager::getSingleton().logMessage("That is " + itr->movable->getName());
+			}
+
+			if (itr->movable->getName().compare("SinbadBody1")==0 && itr->distance<mMechLength/2) {
+				return true;
+			}
+		}
+		return false;
+	}
+////////////////////////////////////////////////////////////////////////// 
+//////////////-------------------------------------//////////////////////// 
+//////////////////////////////////////////////////////////////////////////
+	void createCharacter()
+	{
+		// disable default camera control so the character can do its own
+		mCameraMan->setStyle(CS_MANUAL);
+		
+		mChara = new SinbadCharacterController(mCamera);
+
+		mChara->setCharacterPos(mTerrainPos);
+
+		// create main model
+		mBodyNode1 = mSceneMgr->getRootSceneNode()->createChildSceneNode(mTerrainPos + Vector3(100, mTerrainGroup->getHeightAtWorldPosition(mTerrainPos) + 5, 0));
+		mBodyEnt1 = mSceneMgr->createEntity("SinbadBody1", "Sinbad.mesh");
+
+		SubEntity* subEntity = mBodyEnt1->getSubEntity(6);
+		subEntity->setMaterialName("Sinbad/RedClothes");
+
+		mBodyNode1->attachObject(mBodyEnt1);
+		Ogre::AxisAlignedBox box = mBodyEnt1->getBoundingBox();
+		mBodyNode1->showBoundingBox(true);
+
+		mMechLength = box.getSize().x;
+
+// 		Entity* mBanana1 = mSceneMgr->createEntity("Banana1", "banana_tree3.mesh");
+// 		mBodyNode1->attachObject(mBanana1);
+// 
+// 		Entity* mBanana2 = mSceneMgr->createEntity("Banana2", "banana_tree3.mesh");
+// 		mBodyNode1->attachObject(mBanana2);
+
+	}
+////////////////////////////////////////////////////////////////////////// 
+	void createscene()
+	{
+#pragma region [Create Terrain]
 		bool blankTerrain = false;
 		//blankTerrain = true;
 
 		mTerrainGlobals = OGRE_NEW TerrainGlobalOptions();
 
-        ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
-        ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
+		ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
+		ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
 
 		mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
 		mEditNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -841,7 +973,7 @@ protected:
 
 		mCameraMan->setTopSpeed(50);
 
-		setDragLook(true);
+		setDragLook(false);
 
 		MaterialManager::getSingleton().setDefaultTextureFiltering(TFO_ANISOTROPIC);
 		MaterialManager::getSingleton().setDefaultAnisotropy(7);
@@ -900,11 +1032,11 @@ protected:
 		}
 
 		mTerrainGroup->freeTemporaryResources();
-
+#pragma endregion [Create Terrain]
 		//PTR TuanNA begin comment
 		//[Add grass into map- 11/12/2016]
 		//createGrassMesh(String grassName, String grassMaterialName)
-		
+#pragma region [Create Grass]
 		// type grass in enum GrassType
 		int id = 1;
 		for (id; id <= MAX_GRASS; id++)
@@ -912,7 +1044,7 @@ protected:
 			String grassMaterialName = "Examples/GrassBlades" + StringConverter::toString(id);
 			String grassName = "grass" + StringConverter::toString(id);
 			createGrassMesh(grassName, grassMaterialName);
-			
+
 		}
 
 		//PTR TuanNA [Create Entity- 12/12/2016]
@@ -1001,7 +1133,7 @@ protected:
 						mField->addEntity(grass11, pos, ori, scale);
 						break;
 					}
-				groupGrass--;
+					groupGrass--;
 				} 
 				else
 				{
@@ -1012,14 +1144,10 @@ protected:
 		}
 
 		mField->build();  // build our static geometry (bake the grass into it)
-
-		// build tangent vectors for the ogre head mesh
-		MeshPtr headMesh = MeshManager::getSingleton().load("ogrehead.mesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-		unsigned short src, dest;
-		if (!headMesh->suggestTangentVectorBuildParams(VES_TANGENT, src, dest))
-			headMesh->buildTangentVectors(VES_TANGENT, src, dest);
+#pragma endregion [Create Grass]
 		//PTR TuanNA end comment
 
+#pragma region [Create House]
 		// create a few entities on the terrain
 		Entity* e = mSceneMgr->createEntity("tudorhouse.mesh");
 		Vector3 entPos(-2000, 0, 2000);
@@ -1048,19 +1176,19 @@ protected:
 		sn->setScale(Vector3(0.12, 0.12, 0.12));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
-
+#pragma endregion [Create House]
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
-
+#pragma region [Create Ocean]
 		loadAllMaterialControlFiles(mMaterialControlsContainer);
 		//Define a plane mesh that will be used for the ocean surface
 		Ogre::Plane oceanSurface;
 		oceanSurface.normal = Ogre::Vector3::UNIT_Y;
 		oceanSurface.d = 20;
-		 		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
-		 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		 			oceanSurface,
-		 			24000, 24000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
-		 
+		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
+			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			oceanSurface,
+			TERRAIN_WORLD_SIZE*2, TERRAIN_WORLD_SIZE*2, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+
 		Ogre::Entity*         mOceanSurfaceEnt;
 		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
 		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
@@ -1068,8 +1196,9 @@ protected:
 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 17;
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->attachObject(mOceanSurfaceEnt);
+#pragma endregion [Create Ocean]
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	void createGrassMesh(String grassName, String grassMaterialName)
 	{
 		MeshPtr mesh = MeshManager::getSingleton().createManual(grassName, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
@@ -1189,7 +1318,7 @@ protected:
 		}
 	}
 	//PTR TuanNA end comment
-
+//////////////////////////////////////////////////////////////////////////
 	void _shutdown()
 	{
 		if (mTerrainPaging)
@@ -1214,21 +1343,35 @@ protected:
 
 		SdkGame::_shutdown();
 	}
-
+//////////////////////////////////////////////////////////////////////////
 	//PTR TuanNA begin comment
-	//[Remove mesh grass- 11/12/2016]
+	//[Clean up Grass and Ocean Surface- 11/12/2016]
 	void cleanupContent()
 	{
-		MeshManager::getSingleton().remove("grass");
+		//PTR TuanNA [Remove OceanSurface- 3/1/2017]
+		MeshManager::getSingleton().remove("OceanSurface");
+
+		//PTR TuanNA [Remove Grass- 3/1/2017]
+		for (int id = 1; id <= MAX_GRASS; id++)
+		{
+			String grassName = "grass" + StringConverter::toString(id);
+			MeshManager::getSingleton().remove(grassName);
+		}
+
+		// clean up character controller and the floor mesh
+		if (mChara)
+		{
+			delete mChara;
+			mChara = 0;
+		}
+
+		engine->drop(); // delete engine
 	}
 	//PTR TuanNA end comment
 
-	//PTR TuanNA [Add grass into map- 11/12/2016]
-	const Real GRASS_WIDTH;
-	const Real GRASS_HEIGHT;
-	StaticGeometry* mField;
-
-
+	//Init Main Character
+	SinbadCharacterController* mChara;
+	SinbadCharacterController* mChara2;
 };
 
 #endif

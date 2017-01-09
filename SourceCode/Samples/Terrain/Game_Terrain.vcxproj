@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Terrain/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Terrain/include;../../Dependencies/IrrKlangSDK/irrKlang-1.5.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -82,7 +82,7 @@
     <Link>
       <AdditionalOptions> /machine:X86 /debug %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\lib\Debug\OgreMain_d.lib;..\..\boost\lib\libboost_thread-vc100-mt-gd-1_55.lib;..\..\boost\lib\libboost_date_time-vc100-mt-gd-1_55.lib;..\..\boost\lib\libboost_system-vc100-mt-gd-1_55.lib;..\..\boost\lib\libboost_chrono-vc100-mt-gd-1_55.lib;..\..\lib\Debug\OgreRTShaderSystem_d.lib;..\..\lib\Debug\OgreTerrain_d.lib;..\..\lib\Debug\OgrePaging_d.lib;..\..\lib\Debug\OgreVolume_d.lib;..\..\lib\Debug\OgreOverlay_d.lib;..\..\lib\Debug\OIS_d.lib;..\..\lib\Debug\OgreTerrain_d.lib;..\..\lib\Debug\OgrePaging_d.lib;..\..\lib\Debug\OgreVolume_d.lib;..\..\lib\Debug\OgreOverlay_d.lib;..\..\lib\Debug\OIS_d.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../Dependencies/IrrKlangSDK/irrKlang-1.5.0/lib/Win32-visualStudio;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>../../lib/Debug/Game_Terrain_d.lib</ImportLibrary>
       <ProgramDataBaseFile>../../bin/Debug/Game_Terrain_d.pdb</ProgramDataBaseFile>
@@ -96,7 +96,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Terrain/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../boost;../../include/OGRE;../../include;../../include/OGRE/PlugIns/PCZSceneManager;../../include/OGRE/PlugIns/OctreeZone;../../include/OIS;../Common/include;../../include/OGRE/RTShaderSystem;../../include/OGRE/Terrain;../../include/OGRE/Paging;../../include/OGRE/Volume;../../include/OGRE/Overlay;../../Samples/Terrain/include;../../Dependencies/IrrKlangSDK/irrKlang-1.5.0/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -127,7 +127,7 @@
     <Link>
       <AdditionalOptions> /machine:X86 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\lib\Release\OgreMain.lib;..\..\boost\lib\libboost_thread-vc100-mt-1_55.lib;..\..\boost\lib\libboost_date_time-vc100-mt-1_55.lib;..\..\boost\lib\libboost_system-vc100-mt-1_55.lib;..\..\boost\lib\libboost_chrono-vc100-mt-1_55.lib;..\..\lib\Release\OgreRTShaderSystem.lib;..\..\lib\Release\OgreTerrain.lib;..\..\lib\Release\OgrePaging.lib;..\..\lib\Release\OgreVolume.lib;..\..\lib\Release\OgreOverlay.lib;..\..\lib\Release\OIS.lib;..\..\lib\Release\OgreTerrain.lib;..\..\lib\Release\OgrePaging.lib;..\..\lib\Release\OgreVolume.lib;..\..\lib\Release\OgreOverlay.lib;..\..\lib\Release\OIS.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../Dependencies/IrrKlangSDK/irrKlang-1.5.0/lib/Win32-visualStudio;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>../../lib/Release/Game_Terrain.lib</ImportLibrary>
       <ProgramDataBaseFile>../../bin/Release/Game_Terrain.pdb</ProgramDataBaseFile>
@@ -140,9 +140,10 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\MaterialControls.h" />
+    <ClInclude Include="..\Common\include\MaterialControlsCommon.h" />
+    <ClInclude Include="..\Common\include\SinbadCharacterControllerCommon.h" />
     <ClInclude Include="include\Terrain.h" />
-    <ClCompile Include="src\MaterialControls.cpp" />
+    <ClCompile Include="..\Common\src\MaterialControlsCommon.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>

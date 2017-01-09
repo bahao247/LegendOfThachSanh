@@ -4,7 +4,7 @@
     <ClCompile Include="src\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MaterialControls.cpp">
+    <ClCompile Include="..\Common\src\MaterialControlsCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -12,7 +12,10 @@
     <ClInclude Include="include\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\MaterialControls.h">
+    <ClInclude Include="..\Common\include\MaterialControlsCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\include\SinbadCharacterControllerCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
