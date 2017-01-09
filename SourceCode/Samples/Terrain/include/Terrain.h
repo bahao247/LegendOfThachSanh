@@ -46,19 +46,6 @@
 #include "macUtils.h"
 #endif
 //////////////////////////////////////////////////////////////////////////
-#pragma region [Define Terrain]
-#define TERRAIN_PAGE_MIN_X 0
-#define TERRAIN_PAGE_MIN_Y 0
-#define TERRAIN_PAGE_MAX_X 0
-#define TERRAIN_PAGE_MAX_Y 0
-#define TERRAIN_FILE_PREFIX String("testTerrain")
-#define TERRAIN_FILE_SUFFIX String("dat")
-#define TERRAIN_WORLD_SIZE 12000.0f
-#define TERRAIN_SIZE 513
-#define MAX_GRASS 11
-#define MAX_GROUP_GRASS 3
-#pragma endregion [Define Terrain]
-//////////////////////////////////////////////////////////////////////////
 using namespace Ogre;
 using namespace OgreBites;
 
@@ -219,7 +206,7 @@ public:
 			TerrainGroup::RayResult rayResult = mTerrainGroup->rayIntersects(ray);
 			if (rayResult.hit)
 			{
-//				mEditMarker->setVisible(true);
+				mEditMarker->setVisible(true);
 				mEditNode->setPosition(rayResult.position);
 
 				// figure out which terrains this affects
@@ -232,10 +219,10 @@ public:
 					ti != terrainList.end(); ++ti)
 					doTerrainModify(*ti, rayResult.position, evt.timeSinceLastFrame);
 			}
-// 			else
-// 			{
-// 				mEditMarker->setVisible(false);
-// 			}
+ 			else
+ 			{
+ 				mEditMarker->setVisible(false);
+ 			}
 		}
 #pragma endregion [Funct mMode]
 //////////////////////////////////////////////////////////////////////////
@@ -271,7 +258,15 @@ public:
 				newy = std::max(rayResult.position.y + distanceAboveTerrain, newy);
 				mChara->setCharacterPos(Vector3(characterPos.x, newy, characterPos.z));
   			}
-  
+
+ 			if(isCollision())
+ 			{
+ 				LogManager::getSingleton().logMessage("True Collision!!!!!!");
+ 			}
+ 			else
+ 			{
+ 				LogManager::getSingleton().logMessage("Not Collision!!!!!!");
+ 			}
   		}
 #pragma endregion [Funct mFly]
 //////////////////////////////////////////////////////////////////////////
@@ -468,35 +463,7 @@ protected:
 #endif
 	bool mFly;
 	Real mFallVelocity;
-	enum Mode
-	{
-		MODE_NORMAL = 0,
-		MODE_EDIT_HEIGHT = 1,
-		MODE_EDIT_BLEND = 2,
-		MODE_COUNT = 3
-	};
-	enum ShadowMode
-	{
-		SHADOWS_NONE = 0,
-		SHADOWS_COLOUR = 1,
-		SHADOWS_DEPTH = 2,
-		SHADOWS_COUNT = 3
-	};
-	enum GrassType
-	{
-		GRASS_NONE = 0,
-		GRASS_RED_FLOWER = 1,
-		GRASS_YELLOW_FLOWER = 2,
-		GRASS_ALOE_VERA = 3,
-		GRASS_DIEP = 4,
-		GRASS_DAO_FLOWER = 5,
-		GRASS_ANH_TUC = 6,
-		GRASS_MAI = 7,
-		GRASS_GANG = 8,
-		GRASS_LAU = 9,
-		GRASS_LAU_2 = 10,
-		GRASS_SAN_HO = 11
-	};
+
 	Mode mMode;
 	ShadowMode mShadowMode;
 	Ogre::uint8 mLayerEdit;
@@ -512,6 +479,9 @@ protected:
 	OgreBites::Label* mInfoLabel;
 	bool mTerrainsImported;
 	ShadowCameraSetupPtr mPSSMSetup;
+	SceneNode* mBodyNode1;
+	Entity* mBodyEnt1;
+	Ogre::Real mMechLength;
 
 	typedef std::list<Entity*> EntityList;
 	EntityList mHouseList;
@@ -878,7 +848,7 @@ protected:
 	}
 //////////////////////////////////////////////////////////////////////////
 	//PTR TuanNA begin comment
-	//[- 11/12/2016]
+	//[Init GrassVertex- 11/12/2016]
 #if OGRE_COMPILER == OGRE_COMPILER_MSVC
 #	pragma pack(push, 1)
 #endif
@@ -918,8 +888,37 @@ protected:
 		factory->drop(); // we don't need it anymore, delete it
 
 		// play a single sound
-		engine->play3D("../../media/sound/ophelia.mp3",
+		engine->play3D("../../media/sound/XinChaoVietNam_Jmi.flac",
 			vec3df(0,0,0), true, false, true);
+	}
+////////////////////////////////////////////////////////////////////////// 
+	bool isCollision() 
+	{
+		// fire ray
+		// execute the query, returns a vector of hits
+		RaySceneQuery* mRaySceneQuery = mSceneMgr->createRayQuery(Ray());
+
+		Ray ray;
+
+		ray.setOrigin(mChara->getCharacterPos());
+		ray.setDirection(mChara->getGoalDirection());
+
+		// create a query object
+		mRaySceneQuery->setRay(ray);
+
+		RaySceneQueryResult &result = mRaySceneQuery->execute();
+		RaySceneQueryResult::iterator itr;
+		for (itr = result.begin(); itr != result.end(); itr++) {
+
+			if ((itr->movable->getName() != "") && itr->distance < 100) {
+				LogManager::getSingleton().logMessage("That is " + itr->movable->getName());
+			}
+
+			if (itr->movable->getName().compare("SinbadBody1")==0 && itr->distance<mMechLength/2) {
+				return true;
+			}
+		}
+		return false;
 	}
 ////////////////////////////////////////////////////////////////////////// 
 //////////////-------------------------------------//////////////////////// 
@@ -932,6 +931,26 @@ protected:
 		mChara = new SinbadCharacterController(mCamera);
 
 		mChara->setCharacterPos(mTerrainPos);
+
+		// create main model
+		mBodyNode1 = mSceneMgr->getRootSceneNode()->createChildSceneNode(mTerrainPos + Vector3(100, mTerrainGroup->getHeightAtWorldPosition(mTerrainPos) + 5, 0));
+		mBodyEnt1 = mSceneMgr->createEntity("SinbadBody1", "Sinbad.mesh");
+
+		SubEntity* subEntity = mBodyEnt1->getSubEntity(6);
+		subEntity->setMaterialName("Sinbad/RedClothes");
+
+		mBodyNode1->attachObject(mBodyEnt1);
+		Ogre::AxisAlignedBox box = mBodyEnt1->getBoundingBox();
+		mBodyNode1->showBoundingBox(true);
+
+		mMechLength = box.getSize().x;
+
+// 		Entity* mBanana1 = mSceneMgr->createEntity("Banana1", "banana_tree3.mesh");
+// 		mBodyNode1->attachObject(mBanana1);
+// 
+// 		Entity* mBanana2 = mSceneMgr->createEntity("Banana2", "banana_tree3.mesh");
+// 		mBodyNode1->attachObject(mBanana2);
+
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()
@@ -945,10 +964,10 @@ protected:
 		ResourceGroupManager::getSingleton().createResourceGroup("Terrain");
 		ResourceGroupManager::getSingleton().addResourceLocation(mFSLayer->getWritablePath(""), "FileSystem", "Terrain", false, false);
 
-		//mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
+		mEditMarker = mSceneMgr->createEntity("editMarker", "sphere.mesh");
 		mEditNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-// 		mEditNode->attachObject(mEditMarker);
-// 		mEditNode->setScale(0.05, 0.05, 0.05);
+		mEditNode->attachObject(mEditMarker);
+		mEditNode->setScale(0.05, 0.05, 0.05);
 
 		setupControls();
 
@@ -1017,7 +1036,7 @@ protected:
 		//PTR TuanNA begin comment
 		//[Add grass into map- 11/12/2016]
 		//createGrassMesh(String grassName, String grassMaterialName)
-#pragma region Create Grass
+#pragma region [Create Grass]
 		// type grass in enum GrassType
 		int id = 1;
 		for (id; id <= MAX_GRASS; id++)
@@ -1352,6 +1371,7 @@ protected:
 
 	//Init Main Character
 	SinbadCharacterController* mChara;
+	SinbadCharacterController* mChara2;
 };
 
 #endif

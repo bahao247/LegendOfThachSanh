@@ -1,0 +1,851 @@
+material el_M_kami_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture el_20_01.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_kami_02
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture el_20_00.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_kami_03
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_10_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_kao_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_10_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_kihon_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_20_06.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_kihon_02
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_20_05.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_matu_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 1
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture el_10_05.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_me_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 66.4386
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_10_02.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sita_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_10_01.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sitasiru_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 66.4386
+			emissive 0.2 0.2 0.2 1
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture el_05_03.tga
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_01.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_010
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_011
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_012
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_013
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_014
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_015
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_016
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_017
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_01.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_018
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_019
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_02
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.9 0.9 0.9 0 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_00.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_020
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_01.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_021
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_03.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_022
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_01.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_023
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_02.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_03
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_03.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_04
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_02.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_05
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_06
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_07
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_08
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_sukato_09
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_30_04.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_tama_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_20_09.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_tama_02
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_20_05.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_tetu_01
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_20_05.bmp
+			}
+		}
+
+	}
+
+}
+
+
+
+material el_M_tetu_02
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8 0.8 0.8 1
+			diffuse 0.8 0.8 0.8 1
+			specular 0.15 0.15 0.15 1 49.0689
+			emissive 0.2 0.2 0.2 1
+
+			texture_unit
+			{
+				texture el_20_06.bmp
+			}
+		}
+
+	}
+
+}
