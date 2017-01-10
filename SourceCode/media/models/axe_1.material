@@ -1,0 +1,42 @@
+material 01___DefaultAxes
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5882 0.5882 0.5882 1
+			diffuse 0.5882 0.5882 0.5882 1
+			specular 0.9 0.9 0.9 0 10
+
+			texture_unit
+			{
+				texture MetalBare0018_S.jpg
+			}
+		}
+
+	}
+
+}
+
+
+
+material 02___DefaultAxes
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5882 0.5882 0.5882 1
+			diffuse 0.5882 0.5882 0.5882 1
+			specular 0.9 0.9 0.9 0 10
+			scene_blend one one_minus_src_alpha
+
+			texture_unit
+			{
+				texture Axe2.tga
+			}
+		}
+
+	}
+
+}

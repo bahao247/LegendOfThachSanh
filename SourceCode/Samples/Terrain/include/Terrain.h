@@ -23,7 +23,7 @@
 ---------------------------------------------------------------------------------------
 | Create File: 21:31:47 15/10/2016 by bahao                                                             
 ---------------------------------------------------------------------------------------
-| Last Update: 21:31:47 15/10/2016 by bahao                                                             
+| Last Update: 21:31:47 07/01/2017 by bahao                                                             
 ---------------------------------------------------------------------------------------
 */
 #ifndef __Terrain_H__
@@ -936,21 +936,14 @@ protected:
 		mBodyNode1 = mSceneMgr->getRootSceneNode()->createChildSceneNode(mTerrainPos + Vector3(100, mTerrainGroup->getHeightAtWorldPosition(mTerrainPos) + 5, 0));
 		mBodyEnt1 = mSceneMgr->createEntity("SinbadBody1", "Sinbad.mesh");
 
-		SubEntity* subEntity = mBodyEnt1->getSubEntity(6);
-		subEntity->setMaterialName("Sinbad/RedClothes");
+  		SubEntity* subEntity = mBodyEnt1->getSubEntity(6);
+  		subEntity->setMaterialName("Sinbad/RedClothes");
 
 		mBodyNode1->attachObject(mBodyEnt1);
 		Ogre::AxisAlignedBox box = mBodyEnt1->getBoundingBox();
 		mBodyNode1->showBoundingBox(true);
-
+		mBodyNode1->setScale(0.5,0.5,0.5);
 		mMechLength = box.getSize().x;
-
-// 		Entity* mBanana1 = mSceneMgr->createEntity("Banana1", "banana_tree3.mesh");
-// 		mBodyNode1->attachObject(mBanana1);
-// 
-// 		Entity* mBanana2 = mSceneMgr->createEntity("Banana2", "banana_tree3.mesh");
-// 		mBodyNode1->attachObject(mBanana2);
-
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()

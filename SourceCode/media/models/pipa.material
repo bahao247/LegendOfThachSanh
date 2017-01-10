@@ -1,0 +1,218 @@
+material wire_008008136
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.0314 0.0314 0.5333 1
+			diffuse 0.0314 0.0314 0.5333 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_108008136
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.4235 0.0314 0.5333 1
+			diffuse 0.4235 0.0314 0.5333 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_135059008
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5294 0.2314 0.0314 1
+			diffuse 0.5294 0.2314 0.0314 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_138008110
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.5412 0.0314 0.4314 1
+			diffuse 0.5412 0.0314 0.4314 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_140088225
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.549 0.3451 0.8824 1
+			diffuse 0.549 0.3451 0.8824 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_154215229
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.6039 0.8431 0.898 1
+			diffuse 0.6039 0.8431 0.898 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_177088027
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.6941 0.3451 0.1059 1
+			diffuse 0.6941 0.3451 0.1059 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_177148027
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.6941 0.5804 0.1059 1
+			diffuse 0.6941 0.5804 0.1059 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_214229166
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8392 0.898 0.651 1
+			diffuse 0.8392 0.898 0.651 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_224086086
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8784 0.3373 0.3373 1
+			diffuse 0.8784 0.3373 0.3373 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_225088199
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8824 0.3451 0.7804 1
+			diffuse 0.8824 0.3451 0.7804 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_225143087
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8824 0.5608 0.3412 1
+			diffuse 0.8824 0.5608 0.3412 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
+
+
+
+material wire_225198087
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.8824 0.7765 0.3412 1
+			diffuse 0.8824 0.7765 0.3412 1
+			specular 0.35 0.35 0.35 1 32
+		}
+
+	}
+
+}
