@@ -1,0 +1,77 @@
+material House/A1_DHXD_3_FrontColor1
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material House/A1_DHXD_3_Translucent_Glass_Brown1
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.419608 0.207843 0.054902 0.5
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+		}
+	}
+}
+material House/A1_DHXD_3_Color_001
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material House/A1_DHXD_3__Fencing_Railing_Metal2_2
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture _Fencing_Railing_Metal2_1.png
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
