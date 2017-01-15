@@ -49,7 +49,7 @@
 #include "macUtils.h"
 #endif
 
-#define TERRAIN_FILE_PREFIX String("testTerrain")
+#define TERRAIN_FILE_PREFIX String("terrain_level3")
 #define TERRAIN_FILE_SUFFIX String("dat")
 #define TERRAIN_WORLD_SIZE 12000.0f
 #define TERRAIN_SIZE 513
@@ -451,6 +451,7 @@ protected:
 
 	typedef std::list<Entity*> EntityList;
 	EntityList mHouseList;
+	EntityList mBanianTreeList;
 
 
 
@@ -1022,34 +1023,139 @@ protected:
 
 		// create a few entities on the terrain
 		Entity* e = mSceneMgr->createEntity("tudorhouse.mesh");
-		Vector3 entPos(-2000, 0, 2000);
+		Vector3 entPos(Vector3(mTerrainPos.x + 1850, 0, mTerrainPos.z + 1478));
 		Quaternion rot;
 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
-		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
-		SceneNode* sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		SceneNode* sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->setScale(Vector3(0.12, 0.12, 0.12));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
 
+// 		e = mSceneMgr->createEntity("tudorhouse.mesh");
+// 		entPos = Vector3(mTerrainPos.x + 1850, 0, mTerrainPos.z + 1478);
+// 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
+// 		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
+// 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+// 		sn->setScale(Vector3(0.12, 0.12, 0.12));
+// 		sn->attachObject(e);
+// 		mHouseList.push_back(e);
+
+		//Banian-tree0
+		e = mSceneMgr->createEntity("Banian-tree0", "tree.09.mesh");
+		entPos = Vector3(-2000, 0, 2000);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 250;
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		sn->setScale(Vector3(1, 1, 1));
+		sn->attachObject(e);
+		mBanianTreeList.push_back(e);
+
+		//Temple house
+		e = mSceneMgr->createEntity("Temple-house", "highlanderhouse.01.mesh");
+		entPos = Vector3(1728, 0, 7036);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
+		rot.FromAngleAxis(Degree(90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(5, 5, 5));
+		sn->attachObject(e);
+
+		//Banian-tree1
+		e = mSceneMgr->createEntity("Banian-tree1", "tree.09.mesh");
+		entPos = Vector3(1728 + 122, 0, 7036 + 164);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 125;
+		rot.FromAngleAxis(Degree(90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(0.5, 0.5, 0.5));
+		sn->attachObject(e);
+		mBanianTreeList.push_back(e);
+
+		//Python
+		// create a child node and attach an ogre head and some smoke to it
+		e = mSceneMgr->createEntity("Python1", "ogrehead.mesh");
+		entPos = Vector3(1850, 0, 7100);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65;
+		rot.FromAngleAxis(Degree(90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->attachObject(e);
+		//sn->attachObject(mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke"));
+		// create a green nimbus around the ogre head
+		sn->attachObject(mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus"));
+
+		// Create the cathedral - this will be the static scene center map 87/10/2774
+		e = mSceneMgr->createEntity("Cathedral", "sibenik.mesh");
+		entPos = Vector3(4500, 0, 4500);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) - 5;
+		rot.FromAngleAxis(Degree(-135), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(50, 50, 50));
+		sn->attachObject(e);
+
+		mHouseList.push_back(e);
+
+		//House right back map 7000/10/-1000
 		e = mSceneMgr->createEntity("tudorhouse.mesh");
-		entPos = Vector3(mTerrainPos.x + 1850, 0, mTerrainPos.z + 1478);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
-		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
+		entPos = Vector3(6900, 0, -900);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5;
+		//rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos/*, rot*/);
+		sn->setScale(Vector3(0.12, 0.12, 0.12));
+		sn->attachObject(e);
+		mHouseList.push_back(e);
+
+		//Banian-tree2
+		e = mSceneMgr->createEntity("Banian-tree2", "tree.09.mesh");
+		entPos = Vector3(6900 + 50, 0, -900 + 84);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 125;
+		rot.FromAngleAxis(Degree(90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(0.5, 0.5, 0.5));
+		sn->attachObject(e);
+		mBanianTreeList.push_back(e);
+
+		//House right back map 7000/10/11000
+		e = mSceneMgr->createEntity("tudorhouse.mesh");
+		entPos = Vector3(6900, 0, 10900);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5;
+		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
 		sn->setScale(Vector3(0.12, 0.12, 0.12));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
 
+		//Banian-tree3
+		e = mSceneMgr->createEntity("Banian-tree3", "tree.09.mesh");
+		entPos = Vector3(6900 + 22, 0, 10900 + 64);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 125;
+		rot.FromAngleAxis(Degree(90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(0.5, 0.5, 0.5));
+		sn->attachObject(e);
+		mBanianTreeList.push_back(e);
+
+		//House left front map -5000/10/11000
 		e = mSceneMgr->createEntity("tudorhouse.mesh");
-		entPos = Vector3(mTerrainPos.x + 1970, 0, mTerrainPos.z + 2180);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
-		rot.FromAngleAxis(Degree(Math::RangeRandom(-180, 180)), Vector3::UNIT_Y);
+		entPos = Vector3(-4900, 0, 10900);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5;
+		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
 		sn->setScale(Vector3(0.12, 0.12, 0.12));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
 
-		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+		//Banian-tree4
+		e = mSceneMgr->createEntity("Banian-tree4", "tree.09.mesh");
+		entPos = Vector3(-4900 + 22, 0, 10900 + 64);
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 125;
+		rot.FromAngleAxis(Degree(90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(0.5, 0.5, 0.5));
+		sn->attachObject(e);
+		mBanianTreeList.push_back(e);
+		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");//Blue Sky- Morning
+		//mSceneMgr->setSkyBox(true, "Examples/EveningSky                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Box");//Evening Sky- Ojange Afternooon
+		//mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");//Morning Sky- Ojange Morning
+		//mSceneMgr->setSkyBox(true, "Examples/StormySkyBox");//Stormy Sky
+		//mSceneMgr->setSkyBox(true, "Examples/SceneSkyBox2");//Scene Sky- Bound real
+		//mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");//Space Sky
 
 		loadAllMaterialControlFiles(mMaterialControlsContainer);
 		//Define a plane mesh that will be used for the ocean surface
@@ -1065,7 +1171,7 @@ protected:
 		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
 		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
 		entPos = Vector3(1000, 0, 5000);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 17;
+		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->attachObject(mOceanSurfaceEnt);
 	}
@@ -1211,6 +1317,7 @@ protected:
 		ResourceGroupManager::getSingleton().destroyResourceGroup("Terrain");
 
 		mHouseList.clear();
+		mBanianTreeList.clear();
 
 		SdkGame::_shutdown();
 	}
