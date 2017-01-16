@@ -1,0 +1,468 @@
+material TN_DHXD_M_0090_LightCyan1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.878431 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_FrontColor1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_M_0066_Honeydew1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.941176 1 0.941176 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_CoolGray2
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.945098 0.94902 0.964706 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_truoc2_1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture truoc2_.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Sky1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.380392 0.576471 0.803922 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_Translucent_Glass_Block_Dark1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Glass_Block_Dark.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_M_0092_Azure1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.941176 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_Roofing_Metal_Standing_Seam_Red1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Roofing_Metal_Standing_Seam_Red.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_sau1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture sau.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Translucent_Glass_Sky_Reflection1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Glass_Sky_Reflection.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_M_0130_Gainsboro1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.862745 0.862745 0.862745 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_CIMG3119
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture CIMG3118.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Cobalt1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.235294 0.407843 0.556863 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material TN_DHXD_Stone_Masonry_Multi1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Stone_Masonry_Multi.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_CIMG3120
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture CIMG3110.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_truoc1_1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture truoc1_.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Cladding_Stucco_White1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Cladding_Stucco_White.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_truoc3
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture truoc.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Wood_Floor_Dark1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Wood_Floor_Dark.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Wood_Floor_Parquet1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Wood_Floor_Parquet.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_Fencing_Metal_Straight1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Fencing_Metal_Straight.png
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material TN_DHXD_CoolGray4
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.905882 0.909804 0.921569 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}

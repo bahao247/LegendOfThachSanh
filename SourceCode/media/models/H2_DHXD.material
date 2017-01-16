@@ -1,0 +1,236 @@
+material H2_DHXD_Translucent_Glass_Block_Dark1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Glass_Block_Dark.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H2_DHXD_Color_I03
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 0.196078 0.196078 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H2_DHXD_FrontColor1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H2_DHXD_Translucent_Glass_Corrugated1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Glass_Corrugated.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H2_DHXD_Fencing_Railing_Metal3
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Fencing_Railing_Metal2.png
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H2_DHXD_Stone_Vein_Gray1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Stone_Vein_Gray.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H2_DHXD_Translucent_Glass_Sky_Reflection1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Glass_Sky_Reflection.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H2_DHXD_Roofing_Metal_Standing_Seam_Red1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			texture_unit
+			{
+				texture Roofing_Metal_Standing_Seam_Red.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
+material H2_DHXD_Color_001
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H2_DHXD_M_0011_Seashell1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 0.960784 0.933333 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+		}
+	}
+}
+material H2_DHXD_Translucent_Resin_Crush_Gray1
+{
+	technique
+	{
+		pass
+		{
+			shading phong
+			ambient 0 0 0 1
+			diffuse 1 1 1 1
+			specular 0.33 0.33 0.33 2.6368
+			emissive 0 0 0
+
+			scene_blend alpha_blend
+			depth_write off
+
+			texture_unit
+			{
+				texture Translucent_Resin_Crush_Gray.jpg
+				tex_coord_set 0
+				colour_op modulate
+				scale 1 1
+				scroll 0 0
+				rotate 0
+			}
+		}
+	}
+}
