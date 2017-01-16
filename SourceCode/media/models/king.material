@@ -1,0 +1,23 @@
+material lambert1
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+			specular 0 0 0 1 1
+			emissive 0.5 0.5 0.5 1
+			scene_blend one one_minus_src_alpha
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture B_n14.DDS
+			}
+		}
+
+	}
+
+}
