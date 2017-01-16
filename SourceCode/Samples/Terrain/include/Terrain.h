@@ -232,7 +232,7 @@ public:
 #pragma endregion [Funct mMode]
 //////////////////////////////////////////////////////////////////////////
 #pragma region [Funct mFly]
-  		if (!mFly)
+  		if (mFly)
   		{
   			// clamp to terrain
   			Vector3 characterPos = mChara->getCharacterPos();
@@ -320,6 +320,8 @@ public:
 
 		//PTR TuanNA [Wave Grass- 3/1/2017]
 		waveGrass(evt.timeSinceLastFrame);
+
+		mFountainPivot->yaw(Degree(evt.timeSinceLastFrame * 30));   // spin the fountains around
 
 		//PTR TuanNA begin comment
 		//[Add HP Slider- 16/1/2017]
@@ -961,7 +963,7 @@ protected:
 		
 		mChara = new SinbadCharacterController(mCamera);
 
-		mChara->setCharacterPos(Vector3(-4305, 0, -673));
+		mChara->setCharacterPos(Vector3(2427, 305, 3517));
 
 		// create main model
 		mBodyNode1 = mSceneMgr->getRootSceneNode()->createChildSceneNode(mTerrainPos + Vector3(100, mTerrainGroup->getHeightAtWorldPosition(mTerrainPos) + 5, 0));
@@ -1059,6 +1061,22 @@ protected:
 		sn->setScale(Vector3(15, 15, 15));
 		sn->attachObject(e);
 		sn->attachObject(mSceneMgr->createParticleSystem("Aureola2", "Examples/Aureola"));
+
+		//king- 2418, 311, 3507
+		e = mSceneMgr->createEntity("king1", "king.mesh");
+		entPos = Vector3(2408, 298, 3508);
+		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(0.12, 0.12, 0.12));
+		sn->attachObject(e);
+
+		//Cong chua- -4283, 0, -264
+		e = mSceneMgr->createEntity("princes2", "princes_1.mesh");
+		entPos = Vector3(2408, 303, 3500);
+		rot.FromAngleAxis(Degree(-90), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		sn->setScale(Vector3(5, 5, 5));
+		sn->attachObject(e);
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()
@@ -1275,6 +1293,26 @@ protected:
 		sn->attachObject(e);
 		mBanianTreeList.push_back(e);
 
+		ParticleSystem::setDefaultNonVisibleUpdateTimeout(5);  // set nonvisible timeout
+
+		ParticleSystem* ps;
+		// create some nice fireworks and place it at the origin
+		ps = mSceneMgr->createParticleSystem("Fireworks", "Examples/Fireworks");
+
+		// create shared pivot node for spinning the fountains
+		rot.FromAngleAxis(Degree(220), Vector3::UNIT_Y);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos + Vector3(4000, 0, 1400), rot);
+		sn->attachObject(ps);
+
+		mFountainPivot = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos + Vector3(4000, 0, 1400), rot);
+		ps = mSceneMgr->createParticleSystem("Fountain1", "Examples/PurpleFountain");  // create fountain 1
+		// attach the fountain to a child node of the pivot at a distance and angle
+		mFountainPivot->createChildSceneNode(Vector3(200, -100, 0), Quaternion(Degree(20), Vector3::UNIT_Z))->attachObject(ps);
+
+		ps = mSceneMgr->createParticleSystem("Fountain2", "Examples/PurpleFountain");  // create fountain 2
+		// attach the fountain to a child node of the pivot at a distance and angle
+		mFountainPivot->createChildSceneNode(Vector3(-200, -100, 0), Quaternion(Degree(-20), Vector3::UNIT_Z))->attachObject(ps);
+
 		//Temple house
 		e = mSceneMgr->createEntity("Temple-house", "highlanderhouse.01.mesh");
 		entPos = Vector3(1728, 0, 7036);
@@ -1379,13 +1417,13 @@ protected:
 		mBanianTreeList.push_back(e);
 #pragma endregion [Create House]
 		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");//Blue Sky- Morning
-		//mSceneMgr->setSkyBox(true, "Examples/EveningSky                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Box");//Evening Sky- Ojange Afternooon
+		//mSceneMgr->setSkyBox(true, "Examples/EveningSkyBox");//Evening Sky- Ojange Afterno                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Box");//Evening Sky- Ojange Afternooon
 		//mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");//Morning Sky- Ojange Morning
-		//mSceneMgr->setSkyBox(true, "Examples/StormySkyBox");//Stormy Sky
+		mSceneMgr->setSkyBox(true, "Examples/StormySkyBox");//Stormy Sky
 		//mSceneMgr->setSkyBox(true, "Examples/SceneSkyBox2");//Scene Sky- Bound real
 		//mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");//Space Sky
 		// mSceneMgr->setSkyBox(true, "Examples/TrippySkyBox");//Trippy Sky- L
-		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
+		//mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");
 #pragma region [Create Ocean]
 		loadAllMaterialControlFiles(mMaterialControlsContainer);
 		//Define a plane mesh that will be used for the ocean surface
@@ -1583,6 +1621,7 @@ protected:
 	SinbadCharacterController* mChara2;
 	Slider* mHPSlider;
 	int mHP;
+	SceneNode* mFountainPivot;
 };
 
 #endif
