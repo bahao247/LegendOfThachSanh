@@ -42,7 +42,10 @@ private:
 
 public:
 	
-	SinbadCharacterController(Camera* cam)
+	SinbadCharacterController(Camera* cam):
+		mSpeed(RUN_SPEED)
+		, mScale(1)
+		, mHP(100)
 	{
 		setupBody(cam->getSceneManager(), cam->getPosition());
 		setupCamera(cam);
@@ -84,11 +87,74 @@ public:
 		return (mVerticalVelocity < 0);
 	}
 
+	Real getSpeed()
+	{
+		return mSpeed;
+	}
+
+	void setSpeed(Real Speed)
+	{
+		mSpeed = Speed;
+	}
+	
+	int getHP()
+	{
+		return mHP;
+	}
+
+	void setHP(int Health)
+	{
+		mHP = Health;
+	}
+
+	void setScale(Real Scale)
+	{
+		mScale = Scale;
+	}
+
+	void setDead(void)
+	{
+		mBodyNode->translate(0.0f, mBodyEnt->getBoundingBox().getHalfSize().y*mScale, 0.0f);
+		mBodyNode->pitch(Degree(90));
+		mSpeed=0;
+	}
+
 	void addTime(Real deltaTime)
 	{
 		updateBody(deltaTime);
-		updateAnimations(deltaTime);
+		if (mHP)
+		{
+			updateAnimations(deltaTime);
+		}
 		updateCamera(deltaTime);
+	}
+
+	void setWinAnime()
+	{
+		mSpeed = 0;
+		if (mSwordsDrawn)
+		{
+			setTopAnimation(ANIM_DRAW_SWORDS, true);
+			mTimer = 0;
+		}
+
+		if (mTopAnimID == ANIM_IDLE_TOP || mTopAnimID == ANIM_RUN_TOP)
+		{
+			// start dancing
+			setBaseAnimation(ANIM_DANCE, true);
+			setTopAnimation(ANIM_NONE);
+			// disable hand animation because the dance controls hands
+			mAnims[ANIM_HANDS_RELAXED]->setEnabled(false);
+		}
+		else if (mBaseAnimID == ANIM_DANCE)
+		{
+			// stop dancing
+			setBaseAnimation(ANIM_IDLE_BASE);
+			setTopAnimation(ANIM_IDLE_TOP);
+			// re-enable hand animation
+			mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+		}
+
 	}
 
 	void injectKeyDown(const OIS::KeyEvent& evt)
@@ -199,6 +265,7 @@ private:
 		// create main model
 		mBodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
 		mBodyEnt = sceneMgr->createEntity("SinbadBody", "Sinbad.mesh");
+		mBodyNode->setScale(mScale, mScale, mScale);
 		mBodyNode->attachObject(mBodyEnt);
 
 		Ogre::AxisAlignedBox box = mBodyEnt->getBoundingBox();
@@ -320,7 +387,7 @@ private:
 			mBodyNode->yaw(Degree(yawToGoal));
 
 			// move in current body direction (not the goal direction)
-			mBodyNode->translate(0, 0, deltaTime * RUN_SPEED * mAnims[mBaseAnimID]->getWeight(),
+			mBodyNode->translate(0, 0, deltaTime * mSpeed * mAnims[mBaseAnimID]->getWeight(),
 				Node::TS_LOCAL);
 		}
 
@@ -572,7 +639,10 @@ private:
 	Real mTimer;                // general timer to see how long animations have been playing
 	bool mMinPos; //Min height Terrain at pos
 
-	Ogre::Real mMechLength;
+	Real mMechLength;
+	Real mSpeed;
+	Real mScale;
+	int mHP;
 };
 
 #endif

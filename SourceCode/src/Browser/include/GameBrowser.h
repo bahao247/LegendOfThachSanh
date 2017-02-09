@@ -682,7 +682,7 @@ protected:
 
 				Game* s = Ogre::any_cast<Game*>(mThumbs[menu->getSelectionIndex()]->getUserAny());
 				mTitleLabel->setCaption(menu->getSelectedItem()); 
-				mDescBox->setText("Map: " + s->getInfo()["Category"] + "\nDescription: " + s->getInfo()["Description"]); //PTR TuanNA [Change label to Map- 3/11/2016]
+				mDescBox->setText("Difficulty level: " + s->getInfo()["Category"] + "\nMap: " + s->getInfo()["Description"]); //PTR TuanNA [Change label to Map- 3/11/2016]
 
 				if (mCurrentGame != s) ((Button*)mTrayMgr->getWidget("StartStop"))->setCaption("Start Game"); //PTR TuanNA [Change label- 3/11/2016]
 				else ((Button*)mTrayMgr->getWidget("StartStop"))->setCaption("Exit Game"); //PTR TuanNA [Change label- 3/11/2016]

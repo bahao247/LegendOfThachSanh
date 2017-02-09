@@ -68,8 +68,9 @@ public:
 		,GRASS_WIDTH(40) 
 		,GRASS_HEIGHT(40)
 		,mHPSlider(0)
-		,mHP(0)
-
+		,mMute(true)
+		,mWeapon(false)
+		,mActiveChara(true)
 	{
 		mInfo["Title"] = "Level 5";
 		mInfo["Description"] = "Rhythm of the justice.";
@@ -83,6 +84,10 @@ public:
 
 		// Update terrain at max 20fps
 		mHeightUpdateRate = 1.0 / 20.0;
+		for (int i = 0; i < 3; i++)
+		{
+			mRun[i] = false;
+		}		
 	}
 //////////////////////////////////////////////////////////////////////////
     void testCapabilities(const RenderSystemCapabilities* caps)
@@ -232,7 +237,7 @@ public:
 #pragma endregion [Funct mMode]
 //////////////////////////////////////////////////////////////////////////
 #pragma region [Funct mFly]
-  		if (mFly)
+  		if (!mFly)
   		{
   			// clamp to terrain
   			Vector3 characterPos = mChara->getCharacterPos();
@@ -264,14 +269,37 @@ public:
 				mChara->setCharacterPos(Vector3(characterPos.x, newy, characterPos.z));
   			}
 
- 			if(isCollision())
- 			{
- 				LogManager::getSingleton().logMessage("True Collision!!!!!!");
- 			}
- 			else
- 			{
- 				LogManager::getSingleton().logMessage("Not Collision!!!!!!");
- 			}
+			if(mChara->getHP() == 0)
+			{
+				if (mActiveChara)
+				{
+					engine->play3D("../../media/sound/death1.wav",
+						vec3df(0,0,0), false, false, true);
+					mChara->setDead();
+					
+					Vector3 deadVector = mChara->getCharacterPos();
+					deadVector.y = mTerrainGroup->getHeightAtWorldPosition(deadVector) - 500; 
+					mChara->setCharacterPos(deadVector);
+
+					mActiveChara = false;
+				}	
+			}
+			else if (isCollision())
+			{
+				mChara->setHP(mChara->getHP() - 0.1);
+				mChara->setSpeed(SUB_RUN_SPEED);
+				LogManager::getSingleton().logMessage("True Collision!!!!!!");
+			}
+			else
+			{
+				if (mChara->getSpeed() == SUB_RUN_SPEED)
+				{
+					mChara->setSpeed(RUN_SPEED);
+				}
+				LogManager::getSingleton().logMessage("Not Collision!!!!!!");
+			}
+
+			mHPSlider->setValue(mChara->getHP());
   		}
 #pragma endregion [Funct mFly]
 //////////////////////////////////////////////////////////////////////////
@@ -316,18 +344,13 @@ public:
 #pragma endregion [Funct build terrain isDerivedDataUpdateInProgress]
 //////////////////////////////////////////////////////////////////////////
 		//PTR TuanNA [Add Character- 3/1/2017]
+ 
 		mChara->addTime(evt.timeSinceLastFrame);
 
 		//PTR TuanNA [Wave Grass- 3/1/2017]
 		waveGrass(evt.timeSinceLastFrame);
 
 		mFountainPivot->yaw(Degree(evt.timeSinceLastFrame * 30));   // spin the fountains around
-
-		//PTR TuanNA begin comment
-		//[Add HP Slider- 16/1/2017]
-// 		if (mHPSlider->getValue() != menu->getSelectionIndex() + 1)
-// 			mHPSlider->setValue(menu->getSelectionIndex() + 1); 
-		//PTR TuanNA end comment
 
 		return SdkGame::frameRenderingQueued(evt);  // don't forget the parent updates!
     }
@@ -341,54 +364,98 @@ public:
 	{
 #if OGRE_PLATFORM != OGRE_PLATFORM_APPLE_IOS
 		// relay input events to character controller
-		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyDown(e);
-		switch (e.key)
+		if (mActiveChara)
 		{
-		case OIS::KC_S:
-			// CTRL-S to save
-			if (mInputContext.isKeyDown(OIS::KC_LCONTROL) || mInputContext.isKeyDown(OIS::KC_RCONTROL))
+			if (!mTrayMgr->isDialogVisible()) mChara->injectKeyDown(e);
+		
+			if ((e.key == OIS::KC_W || e.key == OIS::KC_A || e.key == OIS::KC_S || e.key == OIS::KC_D) && (mRun[0] + mRun[1] + mRun[2] + mRun[3] == 0))
 			{
-				saveTerrains(true);
+				engine->play3D("../../media/sound/footsteps-running.wav",
+					vec3df(0,0,0), true, false, true);
 			}
-			else
-				return SdkGame::keyPressed(e);
-			break;
-		case OIS::KC_F10:
-			// dump
+
+			if (e.key == OIS::KC_W )
 			{
-				TerrainGroup::TerrainIterator ti = mTerrainGroup->getTerrainIterator();
-				while (ti.hasMoreElements())
+				mRun[0] = true;
+			}else if (e.key == OIS::KC_A)
+			{
+				mRun[1] = true;
+			}else if (e.key == OIS::KC_S)
+			{
+				mRun[2] = true;
+			}else if (e.key == OIS::KC_D)
+			{
+				mRun[3] = true;
+			}
+
+			switch (e.key)
+			{
+			case OIS::KC_SPACE:
+				engine->play3D("../../media/sound/jump.mp3",
+					vec3df(0,0,0), false, false, true);
+				break;
+			case OIS::KC_Q:
+				mWeapon = !mWeapon;
+				break;
+			case OIS::KC_M:
+				// CTRL-S to save
+				if (engine)
 				{
-					Ogre::uint32 tkey = ti.peekNextKey();
-					TerrainGroup::TerrainSlot* ts = ti.getNext();
-					if (ts->instance && ts->instance->isLoaded())
+					engine->setAllSoundsPaused(mMute);
+					mMute = !mMute;
+				}
+				else
+				{
+					return SdkGame::keyPressed(e);
+				}
+				break;
+			case OIS::KC_S:
+				// CTRL-S to save
+				if (mInputContext.isKeyDown(OIS::KC_LCONTROL) || mInputContext.isKeyDown(OIS::KC_RCONTROL))
+				{
+					saveTerrains(true);
+				}
+				else
+					return SdkGame::keyPressed(e);
+				break;
+			case OIS::KC_F10:
+				// dump
+				{
+					TerrainGroup::TerrainIterator ti = mTerrainGroup->getTerrainIterator();
+					while (ti.hasMoreElements())
 					{
-						ts->instance->_dumpTextures("terrain_" + StringConverter::toString(tkey), ".png");
+						Ogre::uint32 tkey = ti.peekNextKey();
+						TerrainGroup::TerrainSlot* ts = ti.getNext();
+						if (ts->instance && ts->instance->isLoaded())
+						{
+							ts->instance->_dumpTextures("terrain_" + StringConverter::toString(tkey), ".png");
+						}
 					}
 				}
+				break;
+				/*
+			case OIS::KC_F7:
+				// change terrain size
+				if (mTerrainGroup->getTerrainSize() == 513)
+					mTerrainGroup->setTerrainSize(1025);
+				else
+					mTerrainGroup->setTerrainSize(513);
+				break;
+			case OIS::KC_F8:
+				// change terrain world size
+				if (mTerrainGroup->getTerrainWorldSize() == TERRAIN_WORLD_SIZE)
+					mTerrainGroup->setTerrainWorldSize(TERRAIN_WORLD_SIZE * 2);
+				else
+					mTerrainGroup->setTerrainWorldSize(TERRAIN_WORLD_SIZE);
+				break;
+				*/
+	// 		case OIS::KC_Z:
+	// 			mHPSlider->setValue(++mHP);
+	// 			break;
+			default:
+			return SdkGame::keyPressed(e);	
 			}
-			break;
-			/*
-		case OIS::KC_F7:
-			// change terrain size
-			if (mTerrainGroup->getTerrainSize() == 513)
-				mTerrainGroup->setTerrainSize(1025);
-			else
-				mTerrainGroup->setTerrainSize(513);
-			break;
-		case OIS::KC_F8:
-			// change terrain world size
-			if (mTerrainGroup->getTerrainWorldSize() == TERRAIN_WORLD_SIZE)
-				mTerrainGroup->setTerrainWorldSize(TERRAIN_WORLD_SIZE * 2);
-			else
-				mTerrainGroup->setTerrainWorldSize(TERRAIN_WORLD_SIZE);
-			break;
-			*/
-		case OIS::KC_Z:
-			mHPSlider->setValue(++mHP);
-			break;
-		default:
-			return SdkGame::keyPressed(e);
+
 		}
 #endif
 
@@ -398,7 +465,29 @@ public:
 	bool keyReleased(const OIS::KeyEvent& e)
 	{
 		// relay input events to character controller
-		if (!mTrayMgr->isDialogVisible()) mChara->injectKeyUp(e);
+		if (mActiveChara)
+		{
+			if (!mTrayMgr->isDialogVisible()) mChara->injectKeyUp(e);
+
+			if (e.key == OIS::KC_W )
+			{
+				mRun[0] = false;
+			}else if (e.key == OIS::KC_A)
+			{
+				mRun[1] = false;
+			}else if (e.key == OIS::KC_S)
+			{
+				mRun[2] = false;
+			}else if (e.key == OIS::KC_D)
+			{
+				mRun[3] = false;
+			}
+
+			if ((e.key == OIS::KC_W || e.key == OIS::KC_A || e.key == OIS::KC_S || e.key == OIS::KC_D) && (mRun[0] + mRun[1] + mRun[2] + mRun[3] == 0))
+			{
+				engine->removeSoundSource("../../media/sound/footsteps-running.wav");
+			}
+		}
 		return SdkGame::keyReleased(e);
 	}
 //////////////////////////////////////////////////////////////////////////
@@ -450,9 +539,12 @@ public:
 	{
 		// relay input events to character controller
 		if (!mTrayMgr->isDialogVisible()) mChara->injectMouseDown(evt, id);
-		// play a single sound
-		engine->play3D("../../media/sound/explosion.wav",
-			vec3df(0,0,0), false, false, true);
+
+		if (mWeapon)
+		{
+			engine->play3D("../../media/sound/knife_hit1.wav",
+				vec3df(0,0,0), false, false, true);
+		}
 		return SdkGame::mousePressed(evt, id);
 	}
 #endif
@@ -502,6 +594,7 @@ protected:
 	typedef std::list<Entity*> EntityList;
 	EntityList mHouseList;
 	EntityList mBanianTreeList;
+	EntityList mCharaList;
 
 	//PTR TuanNA [Add grass into map- 11/12/2016]
 	const Real GRASS_WIDTH;
@@ -510,6 +603,7 @@ protected:
 	// start the sound engine with default parameters
 	ISoundEngine* engine;
 	ISound* music;
+	
 //////////////////////////////////////////////////////////////////////////
 	void defineTerrain(long x, long y, bool flat = false)
 	{
@@ -814,24 +908,6 @@ protected:
 
 	}
 //////////////////////////////////////////////////////////////////////////
-	/*-----------------------------------------------------------------------------
-	| Extends setupView to change some initial camera settings for this Game.
-	-----------------------------------------------------------------------------*/
-// 	void setupView()
-// 	{
-// 		//SdkGame::setupView();
-// 
-// 		mCamera->setPosition(mTerrainPos + Vector3(1683, 50, 2116));
-// 		mCamera->lookAt(Vector3(1963, 50, 1660));
-// 		mCamera->setNearClipDistance(0.1);
-// 		mCamera->setFarClipDistance(50000);
-// 
-// 		if (mRoot->getRenderSystem()->getCapabilities()->hasCapability(RSC_INFINITE_FAR_PLANE))
-//         {
-//             mCamera->setFarClipDistance(0);   // enable infinite far clip distance if we can
-//         }
-// 	}
-//////////////////////////////////////////////////////////////////////////
 	void setupControls()
 	{
 		mTrayMgr->showCursor();
@@ -901,7 +977,7 @@ protected:
 		CMyFileFactory* factory = new CMyFileFactory();
 		engine->addFileFactory(factory);
 		factory->drop(); // we don't need it anymore, delete it
-
+		
 		// play a single sound
 		engine->play3D("../../media/sound/XinChaoVietNam_Jmi.flac",
 			vec3df(0,0,0), true, false, true);
@@ -927,10 +1003,10 @@ protected:
 
 			if ((itr->movable->getName() != "") && itr->distance < 100) {
 				LogManager::getSingleton().logMessage("That is " + itr->movable->getName());
-			}
 
-			if (itr->movable->getName().compare("SinbadBody1")==0 && itr->distance<mMechLength/2) {
-				return true;
+				if ((itr->movable->getName().compare("OceanSurface")!=0 && itr->movable->getName().compare("Banian-tree0")!=0 && itr->movable->getName().compare("Banian-tree1")!=0 && itr->movable->getName().compare("Banian-tree2")!=0 && itr->movable->getName().compare("Banian-tree3")!=0 && itr->movable->getName().compare("Banian-tree4")!=0 && itr->movable->getName().compare("Cathedral")!=0 && itr->movable->getName().compare("SinbadSword1")!=0 && itr->movable->getName().compare("SinbadSword2")!=0 && itr->movable->getName().compare("SinbadBody")!=0 && itr->movable->getName().compare("MainCamera")!=0 && itr->movable->getName().compare("Ogre/MO5")!=0) && itr->distance<mMechLength/2) {
+					return true; 
+				}
 			}
 		}
 		return false;
@@ -942,13 +1018,13 @@ protected:
 		mHPSlider = mTrayMgr->createThickSlider(TL_TOP, "HPSlider", "HP", 250, 80, 0, 100, 0);
 		mHPSlider->setRange(0, 100, 100);
 		sliderMoved(mHPSlider);
-		mHPSlider->setValue(mHP);
+		mHPSlider->setValue(mChara->getHP());
 	}
 //////////////////////////////////////////////////////////////////////////
-	/*-----------------------------------------------------------------------------
-		| Handles Game slider changes.
-		-----------------------------------------------------------------------------*/
-		virtual void sliderMoved(Slider* slider)
+/*-----------------------------------------------------------------------------
+| Handles Game slider changes.
+-----------------------------------------------------------------------------*/
+	virtual void sliderMoved(Slider* slider)
 		{
 			// format the caption to be fraction style
 			Ogre::String denom = "/" + Ogre::StringConverter::toString(100);
@@ -964,6 +1040,8 @@ protected:
 		mChara = new SinbadCharacterController(mCamera);
 
 		mChara->setCharacterPos(Vector3(2427, 305, 3517));
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(Vector3(-1922, 0, 2037));
+		sn->attachObject(mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus"));
 
 		// create main model
 		mBodyNode1 = mSceneMgr->getRootSceneNode()->createChildSceneNode(mTerrainPos + Vector3(100, mTerrainGroup->getHeightAtWorldPosition(mTerrainPos) + 5, 0));
@@ -980,26 +1058,28 @@ protected:
 
 		//Python
 		// create a child node and attach an ogre head and some smoke to it
-		Quaternion rot;
-		Entity* e = mSceneMgr->createEntity("Python1", "snake.mesh");
-		Vector3 entPos = Vector3(1900, 0, 7100);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
-		SceneNode* sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
-		sn->setScale(Vector3(3, 3, 3));
-		sn->attachObject(e);
-		//sn->attachObject(mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke"));
-		// create a green nimbus around the ogre head
-		// 
-		sn->attachObject(mSceneMgr->createParticleSystem("Aureola", "Examples/Aureola"));
-
-		e = mSceneMgr->createEntity("Bow1", "bow.mesh");
-		entPos.y += 65;
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		sn->setScale(Vector3(0.1, 0.1, 0.1));
-		sn->attachObject(e);
-		sn->attachObject(mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus"));
+// 		Quaternion rot;
+// 		Entity* e = mSceneMgr->createEntity("Python1", "snake.mesh");
+// 		Vector3 entPos = Vector3(1900, 0, 7100);
+// 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
+// 		SceneNode* sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+// 		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
+// 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+// 		sn->setScale(Vector3(3, 3, 3));
+// 		sn->attachObject(e);
+// 		mCharaList.push_back(e);
+// 		//sn->attachObject(mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke"));
+// 		// create a green nimbus around the ogre head
+// 		// 
+// 		sn->attachObject(mSceneMgr->createParticleSystem("Aureola", "Examples/Aureola"));
+// 
+// 		e = mSceneMgr->createEntity("Bow1", "bow.mesh");
+// 		entPos.y += 65;
+// 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+// 		sn->setScale(Vector3(0.1, 0.1, 0.1));
+// 		sn->attachObject(e);
+// 		mCharaList.push_back(e);
+// 		sn->attachObject(mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus"));
 
 		//axe_1.mesh - riu
 		//princes_1.mesh - cong chua
@@ -1015,13 +1095,15 @@ protected:
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->setScale(Vector3(0.1, 0.1, 0.1));
 		sn->attachObject(e);
-
-		e = mSceneMgr->createEntity("Pipa1", "pipa_2.mesh");
-		entPos = Vector3(-2000, 0, 2020);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		sn->setScale(Vector3(0.3, 0.3, 0.3));
-		sn->attachObject(e);
+		mCharaList.push_back(e);
+// 
+// 		e = mSceneMgr->createEntity("Pipa1", "pipa_2.mesh");
+// 		entPos = Vector3(-2000, 0, 2020);
+// 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
+// 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+// 		sn->setScale(Vector3(0.3, 0.3, 0.3));
+// 		sn->attachObject(e);
+// 		mCharaList.push_back(e);
 
 		e = mSceneMgr->createEntity("RiceCooker1", "RiceCooker.mesh");
 		entPos = Vector3(-2000, 0, 2030);
@@ -1029,6 +1111,7 @@ protected:
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->setScale(Vector3(0.1, 0.1, 0.1));
 		sn->attachObject(e);
+		mCharaList.push_back(e);
 
 		e = mSceneMgr->createEntity("wood1", "wood.mesh");
 		entPos = Vector3(-2000, 0, 2050);
@@ -1036,47 +1119,53 @@ protected:
 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->setScale(Vector3(0.1, 0.1, 0.1));
 		sn->attachObject(e);
+		mCharaList.push_back(e);
 
-		//-3456, 0, -739/ Con Thuy Te
-		e = mSceneMgr->createEntity("girl1", "girl.mesh");
-		entPos = Vector3(-3456, 0, -739);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		sn->setScale(Vector3(0.05, 0.05, 0.05));
-		sn->attachObject(e);
+		////-3456, 0, -739/ Con Thuy Te
+		//e = mSceneMgr->createEntity("girl1", "girl.mesh");
+		//entPos = Vector3(-3456, 0, -739);
+		//entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
+		//sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		//sn->setScale(Vector3(0.05, 0.05, 0.05));
+		//sn->attachObject(e);
+		//mCharaList.push_back(e);
 
-		//Cong chua- -4283, 0, -264
-		e = mSceneMgr->createEntity("princes1", "princes_1.mesh");
-		entPos = Vector3(-3466, 0, -739);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		sn->setScale(Vector3(5, 5, 5));
-		sn->attachObject(e);
+		////Cong chua- -4283, 0, -264
+		//e = mSceneMgr->createEntity("princes1", "princes_1.mesh");
+		//entPos = Vector3(-3466, 0, -739);
+		//entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
+		//sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		//sn->setScale(Vector3(5, 5, 5));
+		//sn->attachObject(e);
+		//mCharaList.push_back(e);
 
-		//eagle- -4305, 0, -673
-		e = mSceneMgr->createEntity("eagle1", "eagle.mesh");
-		entPos = Vector3(-4305, 0, -673);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 10;
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		sn->setScale(Vector3(15, 15, 15));
-		sn->attachObject(e);
-		sn->attachObject(mSceneMgr->createParticleSystem("Aureola2", "Examples/Aureola"));
+		////eagle- -4305, 0, -673
+		//e = mSceneMgr->createEntity("eagle1", "eagle.mesh");
+		//entPos = Vector3(-4305, 0, -673);
+		//entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 10;
+		//sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		//sn->setScale(Vector3(15, 15, 15));
+		//sn->attachObject(e);
+		//mCharaList.push_back(e);
+		//sn->attachObject(mSceneMgr->createParticleSystem("Aureola2", "Examples/Aureola"));
 
-		//king- 2418, 311, 3507
-		e = mSceneMgr->createEntity("king1", "king.mesh");
-		entPos = Vector3(2408, 298, 3508);
-		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
-		sn->setScale(Vector3(0.12, 0.12, 0.12));
-		sn->attachObject(e);
+		////king- 2418, 311, 3507
+		//e = mSceneMgr->createEntity("king1", "king.mesh");
+		//entPos = Vector3(2408, 298, 3508);
+		//rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
+		//sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		//sn->setScale(Vector3(0.12, 0.12, 0.12));
+		//sn->attachObject(e);
+		//mCharaList.push_back(e);
 
-		//Cong chua- -4283, 0, -264
-		e = mSceneMgr->createEntity("princes2", "princes_1.mesh");
-		entPos = Vector3(2408, 303, 3500);
-		rot.FromAngleAxis(Degree(-90), Vector3::UNIT_Y);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
-		sn->setScale(Vector3(5, 5, 5));
-		sn->attachObject(e);
+		////Cong chua- -4283, 0, -264
+		//e = mSceneMgr->createEntity("princes2", "princes_1.mesh");
+		//entPos = Vector3(2408, 303, 3500);
+		//rot.FromAngleAxis(Degree(-90), Vector3::UNIT_Y);
+		//sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
+		//sn->setScale(Vector3(5, 5, 5));
+		//sn->attachObject(e);
+		//mCharaList.push_back(e);
 	}
 ////////////////////////////////////////////////////////////////////////// 
 	void createscene()
@@ -1275,11 +1364,10 @@ protected:
 
 #pragma region [Create House]
 		// create a few entities on the terrain
-		Entity* e = mSceneMgr->createEntity("tudorhouse.mesh");
-		Vector3 entPos(Vector3(mTerrainPos.x + 1850, 0, mTerrainPos.z + 1478));
-		Quaternion rot;
+		e = mSceneMgr->createEntity("tudorhouse.mesh");
+		entPos = Vector3(mTerrainPos.x + 1850, 0, mTerrainPos.z + 1478);
 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos) + 65.5 + mTerrainPos.y;
-		SceneNode* sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
 		sn->setScale(Vector3(0.12, 0.12, 0.12));
 		sn->attachObject(e);
 		mHouseList.push_back(e);
@@ -1331,19 +1419,6 @@ protected:
 		sn->setScale(Vector3(0.5, 0.5, 0.5));
 		sn->attachObject(e);
 		mBanianTreeList.push_back(e);
-
-		//Python
-		// create a child node and attach an ogre head and some smoke to it
-// 		e = mSceneMgr->createEntity("Python1", "snake.mesh");
-// 		entPos = Vector3(1850, 0, 7100);
-// 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
-// 		rot.FromAngleAxis(Degree(180), Vector3::UNIT_Y);
-// 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos, rot);
-// 		sn->setScale(Vector3(3, 3, 3));
-// 		sn->attachObject(e);
-// 		//sn->attachObject(mSceneMgr->createParticleSystem("Smoke", "Examples/Smoke"));
-// 		// create a green nimbus around the ogre head
-// 		sn->attachObject(mSceneMgr->createParticleSystem("Nimbus", "Examples/GreenyNimbus"));
 
 		// Create the cathedral - this will be the static scene center map 87/10/2774
 		e = mSceneMgr->createEntity("Cathedral", "sibenik.mesh");
@@ -1582,11 +1657,15 @@ protected:
 
 		OGRE_DELETE mTerrainGlobals;
 		mTerrainGlobals = 0;
+		mFly = 0;
+		mActiveChara = true;
 
 		ResourceGroupManager::getSingleton().destroyResourceGroup("Terrain");
 
 		mHouseList.clear();
 		mBanianTreeList.clear();
+
+		mCharaList.clear();
 
 		SdkGame::_shutdown();
 	}
@@ -1618,9 +1697,15 @@ protected:
 
 	//Init Main Character
 	SinbadCharacterController* mChara;
-	SinbadCharacterController* mChara2;
 	Slider* mHPSlider;
-	int mHP;
+	Entity* e;
+	Vector3 entPos;
+	Quaternion rot;
+	SceneNode* sn;
+	bool mMute;
+	bool mRun[4];
+	bool mWeapon;
+	bool mActiveChara;
 	SceneNode* mFountainPivot;
 };
 
