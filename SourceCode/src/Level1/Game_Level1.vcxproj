@@ -142,8 +142,14 @@
   <ItemGroup>
     <ClInclude Include="..\Common\include\MaterialControlsCommon.h" />
     <ClInclude Include="..\Common\include\SinbadCharacterControllerCommon.h" />
+    <ClInclude Include="CharacterControl.h" />
+    <ClInclude Include="CharacterModel.h" />
+    <ClInclude Include="CharacterView.h" />
     <ClInclude Include="include\Terrain.h" />
     <ClCompile Include="..\Common\src\MaterialControlsCommon.cpp" />
+    <ClCompile Include="CharacterControl.cpp" />
+    <ClCompile Include="CharacterModel.cpp" />
+    <ClCompile Include="CharacterView.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
