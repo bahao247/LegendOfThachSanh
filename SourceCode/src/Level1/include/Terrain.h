@@ -313,10 +313,10 @@ public:
 				LogManager::getSingleton().logMessage("Not Collision!!!!!!");
 			}
 			//mChara->setHP(mChara->getHP() - 0.000000001);
-			mHPSlider->setValue(mChara->getHP());
+			//mHPSlider->setValue(mChara->getHP());
 
 			isCollision(mHPBot);
-			mHPBotSlider->setValue(mHPBot);
+			//mHPBotSlider->setValue(mHPBot);
   		}
 #pragma endregion [Funct mFly]
 //////////////////////////////////////////////////////////////////////////
@@ -981,7 +981,7 @@ protected:
 		createscene();
 		createCharacter();
 		createSound();
-		createControl();
+		//createControl();
 	}
 //PTR TuanNA end comment
 //////////////////////////////////////////////////////////////////////////
@@ -1100,12 +1100,12 @@ protected:
 		mHPSlider = mTrayMgr->createThickSlider(TL_TOP, "HPSlider", "HP", 250, 80, 0, 100, 0);
 		mHPSlider->setRange(0, 100, 100);
 		sliderMoved(mHPSlider);
-		mHPSlider->setValue(mChara->getHP());
+		//mHPSlider->setValue(mChara->getHP());
 
 		mHPBotSlider = mTrayMgr->createThickSlider(TL_BOTTOMLEFT, "HPBotSlider", "HP Bot", 250, 80, 0, 100, 0);
 		mHPBotSlider->setRange(0, 100, 100);
 		sliderMoved(mHPBotSlider);
-		mHPBotSlider->setValue(mHPBot);
+		//mHPBotSlider->setValue(mHPBot);
 	}
 //////////////////////////////////////////////////////////////////////////
 /*-----------------------------------------------------------------------------
@@ -1592,25 +1592,25 @@ protected:
 #pragma region [Create Skybox]		
 		mSceneMgr->setSkyBox(true, "Examples/CloudyNoonSkyBox");//Blue Sky- Morning
 #pragma endregion [Create Skybox]
-#pragma region [Create Ocean]
-		loadAllMaterialControlFiles(mMaterialControlsContainer);
-		//Define a plane mesh that will be used for the ocean surface
-		Ogre::Plane oceanSurface;
-		oceanSurface.normal = Ogre::Vector3::UNIT_Y;
-		oceanSurface.d = 20;
-		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
-			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-			oceanSurface,
-			TERRAIN_WORLD_SIZE*2, TERRAIN_WORLD_SIZE*2, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
-
-		Ogre::Entity*         mOceanSurfaceEnt;
-		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
-		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
-		entPos = Vector3(1000, 0, 5000);
-		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
-		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
-		sn->attachObject(mOceanSurfaceEnt);
-#pragma endregion [Create Ocean]
+// #pragma region [Create Ocean]
+// 		loadAllMaterialControlFiles(mMaterialControlsContainer);
+// 		//Define a plane mesh that will be used for the ocean surface
+// 		Ogre::Plane oceanSurface;
+// 		oceanSurface.normal = Ogre::Vector3::UNIT_Y;
+// 		oceanSurface.d = 20;
+// 		Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
+// 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+// 			oceanSurface,
+// 			TERRAIN_WORLD_SIZE*2, TERRAIN_WORLD_SIZE*2, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+// 
+// 		Ogre::Entity*         mOceanSurfaceEnt;
+// 		mOceanSurfaceEnt = mSceneMgr->createEntity( "OceanSurface", "OceanSurface" );
+// 		mOceanSurfaceEnt->setMaterialName(mMaterialControlsContainer[0].getMaterialName());
+// 		entPos = Vector3(1000, 0, 5000);
+// 		entPos.y = mTerrainGroup->getHeightAtWorldPosition(entPos);
+// 		sn = mSceneMgr->getRootSceneNode()->createChildSceneNode(entPos);
+// 		sn->attachObject(mOceanSurfaceEnt);
+// #pragma endregion [Create Ocean]
 	}
 //////////////////////////////////////////////////////////////////////////
 	void createGrassMesh(String grassName, String grassMaterialName)

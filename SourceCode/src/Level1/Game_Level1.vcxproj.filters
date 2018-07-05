@@ -7,6 +7,15 @@
     <ClCompile Include="..\Common\src\MaterialControlsCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Terrain.h">
@@ -16,6 +25,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Common\include\SinbadCharacterControllerCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
